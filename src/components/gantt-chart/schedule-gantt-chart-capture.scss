@@ -1,0 +1,53 @@
+.schedule-view-capture {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: scroll;
+  box-shadow: 5px 5px 10px rgba(112, 1, 45, 0.5), -5px -5px 10px rgba(112, 1, 45, 0.5), 5px -5px 10px rgba(112, 1, 45, 0.5), -5px 5px 10px rgba(112, 1, 45, 0.5);
+  animation-delay: 1s;
+  animation: scheduleCaptureAnimation 2s forwards;
+
+  .schedule-view-capture-cancel {
+    position: fixed;
+    width: 10%;
+    height: 10%;
+    top: 100px;
+    right: 30px;
+    transition: transform 1s ease;
+    cursor: pointer;
+  }
+  .schedule-view-capture-cancel:hover {
+    transform: scale(1.5);
+  }
+  .schedule-view-capture-cancel::before,
+  .schedule-view-capture-cancel::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 80%;
+    height: 10px;
+    background-color: rgba(112, 1, 45, 0.5);
+    transform-origin: center;
+  }
+  .schedule-view-capture-cancel::before {
+    transform: rotate(45deg);
+  }
+  .schedule-view-capture-cancel::after {
+    transform: rotate(-45deg);
+  }
+}
+
+
+
+@keyframes scheduleCaptureAnimation {
+  from {
+    transform: translateX(0) translateY(0);
+  }
+  to {
+    transform: translateX(0) translateY(0) scale(0.5);
+  }
+}

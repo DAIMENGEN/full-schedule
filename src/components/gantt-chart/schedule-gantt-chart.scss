@@ -1,0 +1,242 @@
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "../common-styles/schedule-scrollbar";
+
+.schedule, .schedule * {
+  box-sizing: border-box;
+}
+
+// 整体的样式设置
+.schedule {
+  direction: ltr;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  font-size: 1em;
+  position: relative;
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 1em;
+    table-layout: fixed;
+    width: 100%;
+    td, th {
+      padding: 0;
+      border: 1px solid $gray-400;
+    }
+
+    th {
+      text-align: center;
+    }
+  }
+
+  .schedule-view-harness {
+    flex-grow: 1;
+    position: relative;
+
+    .schedule-view {
+      inset: 0;
+      position: absolute;
+
+      .schedule-scroller {
+        position: relative;
+      }
+    }
+  }
+
+
+
+  .schedule-scrollgrid-liquid {
+    height: 100%;
+
+    .schedule-scrollgrid-section-liquid {
+      height: 100%;
+    }
+  }
+
+  .schedule-scrollgrid {
+    table {
+      border-left-style: hidden;
+      border-right-style: hidden;
+      border-top-style: hidden;
+    }
+
+    .schedule-scroller-harness {
+      direction: ltr;
+      overflow: hidden;
+      position: relative;
+    }
+  }
+
+  .schedule-datagrid-cell-cushion {
+    overflow: hidden;
+    padding-left: 8px;
+    white-space: nowrap;
+  }
+}
+
+
+
+// 具体的样式设置
+.schedule {
+
+  // 设置, resource 和 timeline 之间的 td 宽度
+  .schedule-scrollgrid-section {
+    .schedule-resource-timeline-divider {
+      cursor: col-resize;
+      width: 3px;
+      background-color: $gray-200;
+    }
+  }
+
+  .schedule-scrollgrid-section {
+    .schedule-datagrid-cell-frame {
+      height: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      position: relative;
+    }
+  }
+
+
+  // 设置 schedule header 部分的样式
+  .schedule-scrollgrid-section-header > td {
+    border-bottom-style: hidden;
+  }
+
+  .schedule-scrollgrid-section-header {
+    .schedule-scroller-harness {
+      height: 100%;
+      .schedule-scroller {
+        height: 100%;
+        .schedule-datagrid-header {
+          height: 100%;
+          td,th {
+            border-bottom-style: hidden;
+          }
+          .schedule-datagrid-cell-resizer {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            cursor: col-resize;
+            width: 5px;
+            z-index: 1;
+            right: -3px;
+          }
+        }
+      }
+    }
+
+    .schedule-timeline-header {
+      table tr:last-child {
+        td,th {
+          border-bottom-style: hidden;
+        }
+      }
+    }
+  }
+
+
+  // 设置 schedule body 部分的样式
+  .schedule-scrollgrid-section-body {
+
+    // 设置 resource 和 timeline 的布局结构，上下撑满。
+    .schedule-scroller-harness-liquid {
+      height: 100%;
+      .schedule-scroller-liquid-absolute {
+        inset: 0;
+        position: absolute;
+      }
+    }
+
+    // 设置 schedule-timeline-body
+    .schedule-timeline-body {
+      min-height: 100%;
+      position: relative;
+      z-index: 1;
+
+      // 通过绝对定位，设置时间插槽容器填满父容器
+      .schedule-timeline-slots {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+        .schedule-timeline-slot-frame {
+          height: 100%;
+        }
+      }
+
+      // 设置时间插槽的 table 上下撑满
+      .schedule-timeline-slots > table {
+        height: 100%;
+      }
+
+      // 设置时间线body的背景
+      .schedule-timeline-bg {
+        position: absolute;
+        inset: 0;
+        width: 0;
+        z-index: 2;
+      }
+
+      .schedule-timeline-events {
+        position: relative;
+        width: 0;
+        z-index: 3;
+
+        .schedule-timeline-event-harness {
+          position: absolute;
+          padding: 0 5px;
+          .schedule-timeline-event {
+            transform: skew(342deg);
+            border-radius: 5px;
+            color: white;
+            .schedule-event-main {
+              width: 100%;
+              padding-left: 5px;
+              font-size: 14px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+      }
+
+      .schedule-timeline-milestones {
+        position: relative;
+        width: 0;
+        z-index: 4;
+
+        .schedule-timeline-milestone-harness {
+          position: absolute;
+          .schedule-timeline-milestone {
+            width: 100%;
+            text-align: center;
+            .schedule-milestone-main {
+              svg {
+                transition: transform 0.3s ease;
+              }
+              svg:hover {
+                transform: scale(1.2);
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.schedule-icon {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  margin-right: 1px;
+}
+
+.schedule-holiday {
+  background-color: $warning-bg-subtle;
+}

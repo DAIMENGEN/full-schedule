@@ -1,0 +1,1 @@
+export type ScheduleViewType = "Day" | "Month" | "Quarter" | "Year";
