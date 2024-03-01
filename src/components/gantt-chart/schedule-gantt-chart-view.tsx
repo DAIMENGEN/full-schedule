@@ -303,10 +303,11 @@ export class ScheduleGanttChartView {
                             <div className={`schedule-timeline-milestones schedule-scrollgrid-sync-inner`}>
                                 {
                                     targetMilestones.filter(milestone => (milestone.range.start.isAfter(timeline.getStart(), "day") || milestone.range.start.isSame(timeline.getStart(), "day")) && milestone.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(milestone => {
+                                        const top = ScheduleUtil.numberToPixels(lineHeight * 0.5 * -1);
                                         const height = ScheduleUtil.numberToPixels(lineHeight);
                                         const position = this.schedule.calculatePosition(milestone.range.start, milestone.range.end, timelineWidth, this.scheduleViewType);
                                         return (
-                                            <div className={`schedule-timeline-milestone-harness`} style={{left: ScheduleUtil.numberToPixels(position.left), right: ScheduleUtil.numberToPixels(position.right), height: height, lineHeight: height}} key={milestone.id}>
+                                            <div className={`schedule-timeline-milestone-harness`} style={{left: ScheduleUtil.numberToPixels(position.left), right: ScheduleUtil.numberToPixels(position.right), top: top, height: height, lineHeight: height}} key={milestone.id}>
                                                 <ScheduleGanttChartTimelineMilestone milestone={milestone} schedule={this.schedule} />
                                             </div>
                                         )
