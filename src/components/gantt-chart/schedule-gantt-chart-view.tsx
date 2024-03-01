@@ -275,11 +275,12 @@ export class ScheduleGanttChartView {
     }
 
     renderTimelineElements(collapseResources: Array<ResourceImpl>, timelineWidth: number): React.JSX.Element {
-        const lineHeight = this.schedule.getLineHeight();
+
         const timeline = this.schedule.getTimeline();
         const draw_elements = (resource: ResourceImpl) => {
             const targetEvents = resource.events;
             const targetMilestones = resource.milestones;
+            const lineHeight = targetMilestones.length > 0 ? this.schedule.getLineHeight() * 1.5 : this.schedule.getLineHeight();
             return (
                 <tr key={resource.id}>
                     <td data-resource-id={resource.id} className={`schedule-timeline-lane schedule-resource`}>
@@ -289,11 +290,16 @@ export class ScheduleGanttChartView {
                             <div className={`schedule-timeline-events schedule-scrollgrid-sync-inner`}>
                                 {
                                     targetEvents.filter(event => !event.range.start.isAfter(timeline.getEnd()) && !event.range.end.isBefore(timeline.getStart())).map(event => {
-                                        const height = ScheduleUtil.numberToPixels(lineHeight * 0.7);
-                                        const top = ScheduleUtil.numberToPixels(lineHeight * 0.15);
+                                        const height = this.schedule.getLineHeight() * 0.7;
+                                        const top = (lineHeight - height) / 2;
                                         const position = this.schedule.calculatePosition(event.range.start, event.range.end, timelineWidth, this.scheduleViewType);
                                         return (
-                                            <div className={`schedule-timeline-event-harness`} style={{left: ScheduleUtil.numberToPixels(position.left), right: ScheduleUtil.numberToPixels(position.right) , top: top, height: height, lineHeight: height}} key={event.id}>
+                                            <div className={`schedule-timeline-event-harness`} style={{
+                                                left: ScheduleUtil.numberToPixels(position.left),
+                                                right: ScheduleUtil.numberToPixels(position.right),
+                                                top: ScheduleUtil.numberToPixels(top),
+                                                height: ScheduleUtil.numberToPixels(height),
+                                                lineHeight: ScheduleUtil.numberToPixels(height)}} key={event.id}>
                                                 <ScheduleGanttChartTimelineLaneEvent event={event} schedule={this.schedule} />
                                             </div>
                                         )
@@ -303,11 +309,16 @@ export class ScheduleGanttChartView {
                             <div className={`schedule-timeline-milestones schedule-scrollgrid-sync-inner`}>
                                 {
                                     targetMilestones.filter(milestone => (milestone.range.start.isAfter(timeline.getStart(), "day") || milestone.range.start.isSame(timeline.getStart(), "day")) && milestone.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(milestone => {
-                                        const top = ScheduleUtil.numberToPixels(lineHeight * 0.5 * -1);
-                                        const height = ScheduleUtil.numberToPixels(lineHeight);
+                                        const top = lineHeight * 0.3 * -1;
                                         const position = this.schedule.calculatePosition(milestone.range.start, milestone.range.end, timelineWidth, this.scheduleViewType);
                                         return (
-                                            <div className={`schedule-timeline-milestone-harness`} style={{left: ScheduleUtil.numberToPixels(position.left), right: ScheduleUtil.numberToPixels(position.right), top: top, height: height, lineHeight: height}} key={milestone.id}>
+                                            <div className={`schedule-timeline-milestone-harness`} style={{
+                                                left: ScheduleUtil.numberToPixels(position.left),
+                                                right: ScheduleUtil.numberToPixels(position.right),
+                                                top: ScheduleUtil.numberToPixels(top),
+                                                height: ScheduleUtil.numberToPixels(lineHeight),
+                                                lineHeight: ScheduleUtil.numberToPixels(lineHeight)
+                                            }} key={milestone.id}>
                                                 <ScheduleGanttChartTimelineMilestone milestone={milestone} schedule={this.schedule} />
                                             </div>
                                         )

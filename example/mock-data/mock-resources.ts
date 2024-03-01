@@ -102,7 +102,7 @@ export const mockResources = [
         title: "Memory Test Software",
         type: 1,
         extendedProps: {
-            order: 5
+            order: -10
         }
     },
     {

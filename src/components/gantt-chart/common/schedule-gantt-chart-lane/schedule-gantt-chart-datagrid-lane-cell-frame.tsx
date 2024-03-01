@@ -37,6 +37,7 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
             return extendedProps ? extendedProps[column] : undefined;
         }
     }
+    const lineHeight = currentResource.getMilestones().length > 0 ? schedule.getLineHeight() * 1.5 : schedule.getLineHeight();
     const milestone = useMemo(() => new ScheduleMilestoneIconSvg(), []);
     const checkpoint = useMemo(() => new ScheduleCheckpointIconSvg(), []);
     const recurring = useMemo(() => new ScheduleRecurringIconSvg(), []);
@@ -96,7 +97,7 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
                       }
                   }} trigger={["contextMenu"]}>
             <div className={`schedule-datagrid-cell-frame`}
-                 style={{height: ScheduleUtil.numberToPixels(schedule.getLineHeight())}} ref={datagridCell}>
+                 style={{height: ScheduleUtil.numberToPixels(lineHeight)}} ref={datagridCell}>
                 <div className={`schedule-datagrid-cell-cushion schedule-scrollgrid-sync-inner`}>
                     <Space size={"small"}>
                         {
