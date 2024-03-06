@@ -52,14 +52,17 @@ export class ScheduleUtil {
     }
 
     static flatMapResources(resources: Array<ResourceImpl>): Array<ResourceImpl> {
-        const getFamilyMember = (resource: ResourceImpl): Array<ResourceImpl> => {
-            const result: Array<ResourceImpl> = [resource];
-            const children = resource.children;
-            if (children.length > 0) {
-                result.push(...Array.from(children.map(child => getFamilyMember(child))).flatMap(children => children));
+        const result: Array<ResourceImpl> = [];
+        const stack: Array<ResourceImpl> = [...resources];
+        while (stack.length > 0) {
+            const current = stack.pop();
+            if (current) {
+                result.push(current);
+                for (let i = current.children.length - 1; i >= 0 ; i--) {
+                    stack.push(current.children[i]);
+                }
             }
-            return result;
         }
-        return Array.from(resources.map(resource => getFamilyMember(resource)).flatMap(family => family));
+        return result;
     }
 }

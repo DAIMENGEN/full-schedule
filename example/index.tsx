@@ -74,7 +74,17 @@ const App = () => {
                                     lineHeight={30}
                                     slotMinWidth={50}
                                     scheduleMaxHeight={800}
-                                    scheduleViewType={"Day"} />
+                                    scheduleViewType={"Year"}
+                                    resourceAreaColumns={[
+                                        {
+                                            field: "title",
+                                            headerContent: "Title"
+                                        },
+                                        {
+                                            field: "order",
+                                            headerContent: "order"
+                                        }
+                                    ]}/>
 
 
         </div>
@@ -86,7 +96,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-        <App />
+        <App/>
     </React.StrictMode>
 );
 

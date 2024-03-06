@@ -31,7 +31,7 @@ export const mockResources = [
         title: "NCPI",
         type: 4,
         extendedProps: {
-            order: 2
+            order: 1
         }
     },
     {
@@ -40,7 +40,7 @@ export const mockResources = [
         type: 4,
         parentId: "8638818878966724025",
         extendedProps: {
-            order: 1
+            order: 2
         }
     },
     {
@@ -49,7 +49,7 @@ export const mockResources = [
         type: 4,
         parentId: "8638818878966724025",
         extendedProps: {
-            order: 1
+            order: 3
         }
     },
     {
@@ -58,7 +58,7 @@ export const mockResources = [
         type: 4,
         parentId: "4575511461886459807",
         extendedProps: {
-            order: 1
+            order: 2
         }
     },
     {
@@ -67,7 +67,7 @@ export const mockResources = [
         type: 4,
         parentId: "6769994271325942397",
         extendedProps: {
-            order: 1
+            order: 2
         }
     },
     {
@@ -85,7 +85,7 @@ export const mockResources = [
         type: 4,
         parentId: "6845329583583619071",
         extendedProps: {
-            order: 1
+            order: 3
         }
     },
     {
@@ -102,7 +102,7 @@ export const mockResources = [
         title: "Memory Test Software",
         type: 1,
         extendedProps: {
-            order: -10
+            order: 2
         }
     },
     {
@@ -111,7 +111,7 @@ export const mockResources = [
         type: 4,
         parentId: "8638818878966724025",
         extendedProps: {
-            order: 1
+            order: 4
         }
     },
     {
@@ -120,7 +120,7 @@ export const mockResources = [
         type: 4,
         parentId: "8638818878966724025",
         extendedProps: {
-            order: 1
+            order: 5
         }
     },
     {
@@ -147,7 +147,7 @@ export const mockResources = [
         type: 4,
         parentId: "6769994271325942397",
         extendedProps: {
-            order: 1
+            order: 3
         }
     },
     {
@@ -156,7 +156,7 @@ export const mockResources = [
         type: 4,
         parentId: "8638818878966724025",
         extendedProps: {
-            order: 1
+            order: 6
         }
     },
     {
@@ -165,7 +165,7 @@ export const mockResources = [
         type: 4,
         parentId: "8638818878966724025",
         extendedProps: {
-            order: 1
+            order: 7
         }
     },
     {
@@ -173,7 +173,7 @@ export const mockResources = [
         title: "Device Handlering",
         type: 4,
         extendedProps: {
-            order: 1
+            order: 3
         }
     },
     {
@@ -182,7 +182,7 @@ export const mockResources = [
         type: 4,
         parentId: "6845329583583619071",
         extendedProps: {
-            order: 1
+            order: 2
         }
     },
     {
@@ -200,7 +200,7 @@ export const mockResources = [
         type: 4,
         parentId: "1441150215284248447",
         extendedProps: {
-            order: 1
+            order: 2
         }
     },
     {
@@ -209,7 +209,7 @@ export const mockResources = [
         type: 4,
         parentId: "3382749776007979989",
         extendedProps: {
-            order: 1
+            order: 2
         }
     },
     {
@@ -227,7 +227,7 @@ export const mockResources = [
         type: 4,
         parentId: "4575511461886459807",
         extendedProps: {
-            order: 1
+            order: 3
         }
     }
 ]
