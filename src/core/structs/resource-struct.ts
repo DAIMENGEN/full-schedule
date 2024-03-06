@@ -2,6 +2,7 @@ import {Dictionary, MenuArg, MenuItems, MountArg} from "../types/public-types";
 import {EventApi, EventImpl} from "./event-struct";
 import {ScheduleApi} from "./schedule-struct";
 import {MilestoneImpl} from "./milestone-struct";
+import {ScheduleUtil} from "../../utils/schedule-util";
 
 export type ResourceContextMenuItems = MenuItems;
 
@@ -58,6 +59,7 @@ export class ResourceImpl implements ResourceApi {
     id: string;
     title: string;
     type: ResourceType;
+    parentId?: string;
     depth: number;
     parent?: ResourceImpl;
     events: Array<EventImpl>;
@@ -69,6 +71,7 @@ export class ResourceImpl implements ResourceApi {
         this.title = resource.title;
         this.depth = depth;
         this.parent = parent;
+        this.parentId = resource.parentId;
         this.events = events;
         this.children = children;
         this.milestones = milestones;
@@ -126,5 +129,55 @@ export class ResourceImpl implements ResourceApi {
 
     getExtendProps(): Dictionary | undefined {
         return this.extendedProps;
+    }
+}
+
+export class ResourceImplBuilder {
+    private readonly resources: Map<string, Array<Resource>>;
+    private readonly events: Map<string, Array<EventImpl>>;
+    private readonly milestones?: Map<string, Array<MilestoneImpl>>;
+
+    constructor(resources: Array<Resource>, events: Array<EventImpl>, milestones?: Array<MilestoneImpl>) {
+        this.resources = new Map(Object.entries(ScheduleUtil.groupArray(resources, (resource) => resource.parentId || "undefined")));
+        this.events = new Map(Object.entries(ScheduleUtil.groupArray(events, (event) => event.resourceId)));
+        this.milestones = milestones ? new Map(Object.entries(ScheduleUtil.groupArray(milestones, (milestone) => milestone.resourceId))) : undefined;
+    }
+
+    builderTree(): Array<ResourceImpl> {
+        const rootId = "undefined";
+        const stack = [{parentId: rootId, depth: 0}];
+        const resourceNodes = new Map<string, ResourceImpl>();
+        const childrenNodes = new Map<string, Array<ResourceImpl>>();
+        while (stack.length > 0) {
+            const current = stack.pop();
+            if (current) {
+                const {parentId, depth} = current;
+                const children = this.resources.get(parentId);
+                if (children) {
+                    children.sort((prev, next) => (prev.extendedProps?.order || 0) - (next.extendedProps?.order || 0))
+                        .forEach(child => {
+                            const node: ResourceImpl = new ResourceImpl(
+                                child,
+                                this.events.get(child.id) || [],
+                                this.milestones?.get(child.id) || [],
+                                [],
+                                depth
+                            );
+                            !childrenNodes.has(parentId) && childrenNodes.set(parentId, []);
+                            childrenNodes.get(parentId)?.push(node);
+                            resourceNodes.set(child.id, node);
+                            stack.push({parentId: child.id, depth: depth + 1});
+                        });
+                }
+            }
+        }
+        resourceNodes.forEach(node => {
+            if (node.parentId) {
+                const parent = resourceNodes.get(node.parentId);
+                node.parent = parent;
+                parent?.children.push(node);
+            }
+        });
+        return childrenNodes.get(rootId) || [];
     }
 }

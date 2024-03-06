@@ -4,7 +4,7 @@ import {
     ResourceApi,
     ResourceAreaColumn,
     ResourceContextMenuItems,
-    ResourceImpl,
+    ResourceImpl, ResourceImplBuilder,
     ResourceLabelContextMenuArg,
     ResourceLabelMountArg,
     ResourceLaneContextMenuArg,
@@ -143,25 +143,8 @@ export class ScheduleImpl implements ScheduleApi {
         this.events = events.map(event => new EventImpl(event));
         this.milestones = milestones?.map(milestone => new MilestoneImpl(milestone)) || [];
         this.timeline = new TimelineImpl({start, end, specialWorkdays, companyHolidays, nationalHolidays});
-        const buildTree = (resources: Array<Resource>, parentId?: string, depth: number = 0): Array<ResourceImpl> => {
-            const tree: Array<ResourceImpl> = [];
-            const getChildren = (parentId: string | undefined) => resources
-                .filter(item => item.parentId === parentId)
-                .sort((a, b) => (a.extendedProps?.order || 0) - (b.extendedProps?.order || 0));
-            getChildren(parentId).forEach(resource => {
-                const children = buildTree(resources, resource.id, depth + 1);
-                const element: ResourceImpl = new ResourceImpl(
-                    resource,
-                    this.events.filter(event => event.resourceId === resource.id),
-                    this.milestones.filter(milestone => milestone.resourceId === resource.id),
-                    children,
-                    depth);
-                children.forEach(child => child.parent = element);
-                tree.push(element);
-            });
-            return tree;
-        }
-        this.topLevelResources = buildTree(resources);
+        const resourceImplBuilder = new ResourceImplBuilder(resources, this.events, this.milestones);
+        this.topLevelResources = resourceImplBuilder.builderTree();
         this.resources = ScheduleUtil.flatMapResources(this.topLevelResources);
         this.events.forEach(event => event.resource = this.resources.find(r => r.id === event.resourceId));
         this.milestones.filter(milestone => milestone.resource = this.resources.find(r => r.id === milestone.resourceId));
