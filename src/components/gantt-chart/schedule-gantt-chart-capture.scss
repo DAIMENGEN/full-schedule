@@ -1,7 +1,9 @@
 .schedule-view-capture {
   position: fixed;
+  top: 0;
   left: 0;
   width: 100%;
+  height: 100%;
   z-index: 1;
   overflow: scroll;
   box-shadow: 5px 5px 10px rgba(112, 1, 45, 0.5), -5px -5px 10px rgba(112, 1, 45, 0.5), 5px -5px 10px rgba(112, 1, 45, 0.5), -5px 5px 10px rgba(112, 1, 45, 0.5);
