@@ -11,10 +11,10 @@ type Props = {
     classNames?: Array<string>;
 }
 export const ScheduleGanttChartTimelineSlotFrame:React.FC<Props> = ({date, level, timeText, schedule, classNames}) => {
-    const timelineSlot = useRef<HTMLDivElement>(null);
+    const timelineSlot = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
-        if (timelineSlot.current) {
-            const element = timelineSlot.current;
+        const element = timelineSlot.current;
+        if (element) {
             const isToday = date.isSame(dayjs(), ScheduleUtil.getDateUnitByScheduleViewType(schedule.getScheduleViewType()));
             const isPast = date.isBefore(dayjs(), ScheduleUtil.getDateUnitByScheduleViewType(schedule.getScheduleViewType()));
             const isFuture = date.isAfter(dayjs(), ScheduleUtil.getDateUnitByScheduleViewType(schedule.getScheduleViewType()));

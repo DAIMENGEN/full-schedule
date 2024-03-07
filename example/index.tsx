@@ -22,7 +22,7 @@ const App = () => {
                                     lineHeight={40}
                                     slotMinWidth={50}
                                     scheduleMaxHeight={800}
-                                    scheduleViewType={"Month"}
+                                    scheduleViewType={"Quarter"}
                                     resourceAreaColumns={[
                                         {
                                             field: "title",

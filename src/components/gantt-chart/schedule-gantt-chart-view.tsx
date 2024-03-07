@@ -95,6 +95,10 @@ export class ScheduleGanttChartView {
                 const months = timeline.getMonths();
                 const months_cols = months.map(month => <col key={month.format("YYYY-MM")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
                 return <colgroup>{months_cols}</colgroup>;
+            case "Quarter":
+                const quarters = timeline.getQuarters();
+                const quarters_cols = quarters.map(quarter => <col key={quarter.format("YYYY-MM")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
+                return <colgroup>{quarters_cols}</colgroup>
             case "Year":
                 const years = timeline.getYears();
                 const years_cols = years.map(year => <col key={year.format("YYYY")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);

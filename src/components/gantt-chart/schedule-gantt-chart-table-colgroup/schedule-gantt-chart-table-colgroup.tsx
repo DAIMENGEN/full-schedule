@@ -6,7 +6,7 @@ import {changeResourceAreaWidth} from "../../../core/state/schedule-slice";
 export const ScheduleGanttChartTableColgroup = () => {
     const resourceAreaWidth = useScheduleSelector(state => state.scheduleState.resourceAreaWidth);
     const isResizing = useRef<boolean>(false);
-    const colRef = useRef<HTMLTableColElement>(null)
+    const colRef = useRef<HTMLTableColElement | null>(null)
     const scheduleDispatch = useScheduleDispatch();
     useEffect(() => {
         const dividers = document.getElementsByClassName("schedule-resource-timeline-divider");
