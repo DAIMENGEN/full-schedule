@@ -74,7 +74,7 @@ export class ScheduleGanttChartView {
         return (
             <tbody>
             {
-                this.schedule.getTopLevelResources().flatMap(resource => renderTableRows(resource))
+                this.schedule.getResourcesTree().flatMap(resource => renderTableRows(resource))
             }
             </tbody>
         )
@@ -340,7 +340,7 @@ export class ScheduleGanttChartView {
         }
         return (
             <tbody>
-            {this.schedule.getTopLevelResources().flatMap(resource => render(resource))}
+            {this.schedule.getResourcesTree().flatMap(resource => render(resource))}
             </tbody>
         )
     }

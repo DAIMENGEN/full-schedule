@@ -74,7 +74,7 @@ export interface ScheduleApi {
 
     getResources(): Array<ResourceApi>;
 
-    getTopLevelResources(): Array<ResourceApi>;
+    getResourcesTree(): Array<ResourceApi>;
 
     getResourceById(resourceId: string): ResourceApi | undefined;
 
@@ -131,7 +131,7 @@ export class ScheduleImpl implements ScheduleApi {
     private readonly events: Array<EventImpl>;
     private readonly resources: Array<ResourceImpl>;
     private readonly milestones: Array<MilestoneImpl>;
-    private readonly topLevelResources: Array<ResourceImpl>;
+    private readonly resourcesTree: Array<ResourceImpl>;
     private readonly scheduleViewType: ScheduleViewType;
 
     constructor(props: ScheduleProps) {
@@ -144,8 +144,8 @@ export class ScheduleImpl implements ScheduleApi {
         this.milestones = milestones?.map(milestone => new MilestoneImpl(milestone)) || [];
         this.timeline = new TimelineImpl({start, end, specialWorkdays, companyHolidays, nationalHolidays});
         const resourceImplBuilder = new ResourceImplBuilder(resources, this.events, this.milestones);
-        this.topLevelResources = resourceImplBuilder.builderTree();
-        this.resources = ScheduleUtil.flatMapResources(this.topLevelResources);
+        this.resourcesTree = resourceImplBuilder.builderTree();
+        this.resources = ScheduleUtil.flatMapResources(this.resourcesTree);
         this.events.forEach(event => event.resource = this.resources.find(r => r.id === event.resourceId));
         this.milestones.filter(milestone => milestone.resource = this.resources.find(r => r.id === milestone.resourceId));
         this.lineHeight = lineHeight;
@@ -178,8 +178,8 @@ export class ScheduleImpl implements ScheduleApi {
         return this.resources;
     }
 
-    public getTopLevelResources(): Array<ResourceImpl> {
-        return this.topLevelResources;
+    public getResourcesTree(): Array<ResourceImpl> {
+        return this.resourcesTree;
     }
 
     public getResourceById(id: string): ResourceImpl | undefined {
