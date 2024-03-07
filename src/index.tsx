@@ -3,6 +3,8 @@ export {Event as FullScheduleEvent} from "./core/structs/event-struct";
 export {EventApi as FullScheduleEventApi} from "./core/structs/event-struct";
 export {Milestone as FullScheduleMilestone} from "./core/structs/milestone-struct";
 export {MilestoneApi as FullScheduleMilestoneApi} from "./core/structs/milestone-struct";
+export {Checkpoint as FullScheduleCheckpoint} from "./core/structs/checkpoint-struct";
+export {CheckpointApi as FullScheduleCheckpointApi} from "./core/structs/checkpoint-struct";
 export {Resource as FullScheduleResource} from "./core/structs/resource-struct";
 export {ResourceApi as FullScheduleResourceApi} from "./core/structs/resource-struct";
 export {ScheduleApi as FullScheduleApi} from "./core/structs/schedule-struct";

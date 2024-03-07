@@ -21,6 +21,9 @@ import {
 import {
     ScheduleGanttChartDatagridLaneCellFrame
 } from "./common/schedule-gantt-chart-lane/schedule-gantt-chart-datagrid-lane-cell-frame";
+import {
+    ScheduleGanttChartTimelineCheckpoint
+} from "./common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-checkpoint";
 
 export class ScheduleGanttChartView {
 
@@ -280,6 +283,7 @@ export class ScheduleGanttChartView {
         const draw_elements = (resource: ResourceImpl) => {
             const targetEvents = resource.events;
             const targetMilestones = resource.milestones;
+            const targetCheckpoints = resource.checkpoints;
             const lineHeight = targetMilestones.length > 0 ? this.schedule.getLineHeight() * 1.5 : this.schedule.getLineHeight();
             return (
                 <tr key={resource.id}>
@@ -320,6 +324,26 @@ export class ScheduleGanttChartView {
                                                 lineHeight: ScheduleUtil.numberToPixels(lineHeight)
                                             }} key={milestone.id}>
                                                 <ScheduleGanttChartTimelineMilestone milestone={milestone} schedule={this.schedule} />
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            <div className={`schedule-timeline-checkpoints schedule-scrollgrid-sync-inner`}>
+                                {
+                                    targetCheckpoints.filter(checkpoint => (checkpoint.range.start.isAfter(timeline.getStart(), "day") || checkpoint.range.start.isSame(timeline.getStart(), "day")) && checkpoint.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(checkpoint => {
+                                        const height = this.schedule.getLineHeight() * 0.7;
+                                        const top = (lineHeight - height) / 6;
+                                        const position = this.schedule.calculatePosition(checkpoint.range.start, checkpoint.range.end, timelineWidth, this.scheduleViewType);
+                                        return (
+                                            <div className={`schedule-timeline-checkpoint-harness`} style={{
+                                                left: ScheduleUtil.numberToPixels(position.left),
+                                                right: ScheduleUtil.numberToPixels(position.right),
+                                                top: ScheduleUtil.numberToPixels(top),
+                                                height: ScheduleUtil.numberToPixels(height),
+                                                lineHeight: ScheduleUtil.numberToPixels(lineHeight)
+                                            }} key={checkpoint.id}>
+                                                <ScheduleGanttChartTimelineCheckpoint checkpoint={checkpoint} schedule={this.schedule} />
                                             </div>
                                         )
                                     })

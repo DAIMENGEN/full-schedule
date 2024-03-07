@@ -8,6 +8,7 @@ import {FullScheduleGanttChart} from "../dist";
 import "../dist/full-schedule.css";
 import {mockMilestones} from "./mock-data/mock-milestones";
 import "./index.scss";
+import {mockCheckpoints} from "./mock-data/mock-checkpoints";
 
 const App = () => {
     return (
@@ -17,10 +18,11 @@ const App = () => {
                                     resources={mockResources}
                                     events={mockEvents}
                                     milestones={mockMilestones}
-                                    lineHeight={30}
+                                    checkpoints={mockCheckpoints}
+                                    lineHeight={40}
                                     slotMinWidth={50}
                                     scheduleMaxHeight={800}
-                                    scheduleViewType={"Year"}
+                                    scheduleViewType={"Month"}
                                     resourceAreaColumns={[
                                         {
                                             field: "title",

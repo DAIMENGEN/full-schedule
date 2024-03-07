@@ -1,8 +1,9 @@
 import {Dictionary, MenuArg, MenuItems, MountArg} from "../types/public-types";
 import {EventApi, EventImpl} from "./event-struct";
 import {ScheduleApi} from "./schedule-struct";
-import {MilestoneImpl} from "./milestone-struct";
+import {MilestoneApi, MilestoneImpl} from "./milestone-struct";
 import {ScheduleUtil} from "../../utils/schedule-util";
+import {CheckpointApi, CheckpointImpl} from "./checkpoint-struct";
 
 export type ResourceContextMenuItems = MenuItems;
 
@@ -43,6 +44,17 @@ export interface Resource {
     extendedProps?: Dictionary;
 }
 
+export interface ResourceImplProps {
+    depth: number;
+    resource: Resource;
+    parent?: ResourceImpl;
+    events: Array<EventImpl>;
+    children: Array<ResourceImpl>;
+    milestones: Array<MilestoneImpl>;
+    checkpoints: Array<CheckpointImpl>;
+
+}
+
 export interface ResourceApi {
     getId(): string;
     getTitle(): string;
@@ -51,7 +63,8 @@ export interface ResourceApi {
     getParent(): ResourceApi | undefined;
     getChildren(): Array<ResourceApi>;
     getEvents(): Array<EventApi>;
-    getMilestones(): Array<MilestoneImpl>;
+    getMilestones(): Array<MilestoneApi>;
+    getCheckpoints(): Array<CheckpointApi>;
     getExtendProps(): Dictionary | undefined;
 }
 
@@ -64,9 +77,11 @@ export class ResourceImpl implements ResourceApi {
     parent?: ResourceImpl;
     events: Array<EventImpl>;
     milestones: Array<MilestoneImpl>;
+    checkpoints: Array<CheckpointImpl>;
     extendedProps?: Dictionary;
     children: Array<ResourceImpl>;
-    constructor(resource: Resource, events: Array<EventImpl>, milestones: Array<MilestoneImpl>, children: Array<ResourceImpl>, depth: number, parent?: ResourceImpl) {
+    constructor(props: ResourceImplProps) {
+        const {resource, events, milestones, checkpoints, children, depth, parent} = props;
         this.id = resource.id;
         this.title = resource.title;
         this.depth = depth;
@@ -75,6 +90,7 @@ export class ResourceImpl implements ResourceApi {
         this.events = events;
         this.children = children;
         this.milestones = milestones;
+        this.checkpoints = checkpoints;
         this.extendedProps = resource.extendedProps;
         switch (resource.type) {
             case 1:
@@ -127,6 +143,10 @@ export class ResourceImpl implements ResourceApi {
         return this.milestones;
     }
 
+    getCheckpoints(): Array<CheckpointApi> {
+        return this.checkpoints;
+    }
+
     getExtendProps(): Dictionary | undefined {
         return this.extendedProps;
     }
@@ -136,11 +156,13 @@ export class ResourceImplBuilder {
     private readonly resources: Map<string, Array<Resource>>;
     private readonly events: Map<string, Array<EventImpl>>;
     private readonly milestones?: Map<string, Array<MilestoneImpl>>;
+    private readonly checkpoints?: Map<string, Array<CheckpointImpl>>;
 
-    constructor(resources: Array<Resource>, events: Array<EventImpl>, milestones?: Array<MilestoneImpl>) {
-        this.resources = new Map(Object.entries(ScheduleUtil.groupArray(resources, (resource) => resource.parentId || "undefined")));
-        this.events = new Map(Object.entries(ScheduleUtil.groupArray(events, (event) => event.resourceId)));
-        this.milestones = milestones ? new Map(Object.entries(ScheduleUtil.groupArray(milestones, (milestone) => milestone.resourceId))) : undefined;
+    constructor(resources: Array<Resource>, events: Array<EventImpl>, milestones?: Array<MilestoneImpl>, checkpoints?: Array<CheckpointImpl>) {
+        this.resources = new Map(Object.entries(ScheduleUtil.groupArray(resources, (resource: Resource) => resource.parentId || "undefined")));
+        this.events = new Map(Object.entries(ScheduleUtil.groupArray(events, (event: EventImpl) => event.resourceId)));
+        this.milestones = milestones ? new Map(Object.entries(ScheduleUtil.groupArray(milestones, (milestone: MilestoneImpl) => milestone.resourceId))) : undefined;
+        this.checkpoints = checkpoints ? new Map(Object.entries(ScheduleUtil.groupArray(checkpoints, (checkpoint: CheckpointImpl) => checkpoint.resourceId))) : undefined;
     }
 
     builderTree(): Array<ResourceImpl> {
@@ -156,13 +178,14 @@ export class ResourceImplBuilder {
                 if (children) {
                     children.sort((prev, next) => (prev.extendedProps?.order || 0) - (next.extendedProps?.order || 0))
                         .forEach(child => {
-                            const node: ResourceImpl = new ResourceImpl(
-                                child,
-                                this.events.get(child.id) || [],
-                                this.milestones?.get(child.id) || [],
-                                [],
-                                depth
-                            );
+                            const node: ResourceImpl = new ResourceImpl({
+                                depth: depth,
+                                resource: child,
+                                children: [],
+                                events: this.events.get(child.id) || [],
+                                milestones: this.milestones?.get(child.id) || [],
+                                checkpoints: this.checkpoints?.get(child.id) || []
+                            });
                             !childrenNodes.has(parentId) && childrenNodes.set(parentId, []);
                             childrenNodes.get(parentId)?.push(node);
                             resourceNodes.set(child.id, node);

@@ -226,6 +226,29 @@
           }
         }
       }
+
+      .schedule-timeline-checkpoints {
+        position: relative;
+        width: 0;
+        z-index: 4;
+
+        .schedule-timeline-checkpoint-harness {
+          position: absolute;
+          .schedule-timeline-checkpoint {
+            width: 100%;
+            text-align: center;
+            .schedule-checkpoint-main {
+              svg {
+                transition: transform 0.3s ease;
+              }
+              svg:hover {
+                transform: scale(1.2);
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

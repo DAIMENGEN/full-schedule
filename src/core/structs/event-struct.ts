@@ -3,20 +3,18 @@ import {Dictionary, MenuArg, MenuItems, MountArg} from "../types/public-types";
 import dayjs from "dayjs";
 import {ResourceApi} from "./resource-struct";
 import {ScheduleApi} from "./schedule-struct";
+import {TemporalState} from "../timelib/time-lib";
 
 export type EventContextMenuItems = MenuItems;
 
 export interface EventArg {
     schedule: ScheduleApi,
     event: EventApi;
-    isPast: Boolean;
-    isFuture: Boolean;
-    isProcess: Boolean;
 }
 
-export type EventMountArg = MountArg<EventArg>;
+export type EventMountArg = MountArg<EventArg & TemporalState>;
 
-export type EventContextMenuArg = MenuArg<EventArg>;
+export type EventContextMenuArg = MenuArg<EventArg & TemporalState>;
 
 export interface Event {
     id: string;

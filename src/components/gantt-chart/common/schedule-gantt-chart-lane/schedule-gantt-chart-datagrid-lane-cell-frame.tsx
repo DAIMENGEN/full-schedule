@@ -7,7 +7,6 @@ import {Resource, ResourceAreaColumn, ResourceImpl, ResourceType} from "../../..
 import {MinusSquareOutlined, PlusSquareOutlined} from "@ant-design/icons";
 import {collapseResource, expandedResource} from "../../../../core/state/schedule-slice";
 import {ScheduleMilestoneIconSvg} from "../../../../core/icon/svg-icon/schedule-milestone-icon-svg";
-import {ScheduleCheckpointIconSvg} from "../../../../core/icon/svg-icon/schedule-checkpoint-icon-svg";
 import {ScheduleRecurringIconSvg} from "../../../../core/icon/svg-icon/schedule-recurring-icon-svg";
 
 type Props = {
@@ -39,7 +38,6 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
     }
     const lineHeight = currentResource.getMilestones().length > 0 ? schedule.getLineHeight() * 1.5 : schedule.getLineHeight();
     const milestone = useMemo(() => new ScheduleMilestoneIconSvg(), []);
-    const checkpoint = useMemo(() => new ScheduleCheckpointIconSvg(), []);
     const recurring = useMemo(() => new ScheduleRecurringIconSvg(), []);
     const renderResourceType = useCallback((resource: ResourceImpl) => {
         if (resource.milestones.length > 0) return milestone.render();
@@ -47,8 +45,8 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
         switch (resource.type) {
             // case ResourceType.MILESTONE:
             // return milestone.render();
-            case ResourceType.CHECKPOINT:
-                return checkpoint.render();
+            // case ResourceType.CHECKPOINT:
+            //     return checkpoint.render();
             case ResourceType.RECURRING:
                 return recurring.render();
             case ResourceType.ROUTINE:
@@ -56,7 +54,7 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
             default:
                 return <></>;
         }
-    }, [milestone, checkpoint, recurring]);
+    }, [milestone, recurring]);
 
     useEffect(() => {
         if (datagridCell.current) {

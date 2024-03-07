@@ -22,6 +22,12 @@ import {
     MilestoneContextMenuItems, MilestoneImpl,
     MilestoneMountArg
 } from "./milestone-struct";
+import {
+    Checkpoint, CheckpointApi,
+    CheckpointContextMenuArg,
+    CheckpointContextMenuItems, CheckpointImpl,
+    CheckpointMountArg
+} from "./checkpoint-struct";
 
 export type ScheduleProps = {
     end: dayjs.Dayjs;
@@ -33,11 +39,13 @@ export type ScheduleProps = {
     events: Array<Event>;
     resources: Array<Resource>;
     milestones?: Array<Milestone>;
+    checkpoints?: Array<Checkpoint>;
     companyHolidays?: Array<dayjs.Dayjs>;
     specialWorkdays?: Array<dayjs.Dayjs>;
     nationalHolidays?: Array<dayjs.Dayjs>;
     eventContextMenu?: boolean;
     milestoneContextMenu?: boolean;
+    checkpointContextMenu?: boolean;
     resourceLaneContextMenu?: boolean;
     resourceLabelContextMenu?: boolean;
     resourceAreaColumns?: Array<ResourceAreaColumn>;
@@ -45,6 +53,10 @@ export type ScheduleProps = {
     milestoneContextMenuItems?: MilestoneContextMenuItems;
     milestoneDidMount?: DidMountHandler<MilestoneMountArg>;
     milestoneWillUnmount?: WillUnmountHandler<MilestoneMountArg>;
+    checkpointContextMenuClick?: ContextMenuClickHandler<CheckpointContextMenuArg>;
+    checkpointContextMenuItems?: CheckpointContextMenuItems;
+    checkpointDidMount?: DidMountHandler<CheckpointMountArg>;
+    checkpointWillUnmount?: WillUnmountHandler<CheckpointMountArg>;
     eventContextMenuClick?: ContextMenuClickHandler<EventContextMenuArg>;
     eventContextMenuItems?: EventContextMenuItems;
     eventDidMount?: DidMountHandler<EventMountArg>;
@@ -80,6 +92,8 @@ export interface ScheduleApi {
 
     getMilestones(): Array<MilestoneApi>;
 
+    getCheckpoints(): Array<CheckpointApi>;
+
     getTimeline(): TimelineApi;
 
     getLineHeight(): number;
@@ -99,6 +113,10 @@ export interface ScheduleApi {
     milestoneDidMount(arg: MilestoneMountArg): void;
 
     milestoneWillUnmount(arg: MilestoneMountArg): void;
+
+    checkpointDidMount(arg: CheckpointMountArg): void;
+
+    checkpointWillUnmount(arg: CheckpointMountArg): void;
 
     eventDidMount(arg: EventMountArg): void;
 
@@ -131,19 +149,21 @@ export class ScheduleImpl implements ScheduleApi {
     private readonly events: Array<EventImpl>;
     private readonly resources: Array<ResourceImpl>;
     private readonly milestones: Array<MilestoneImpl>;
+    private readonly checkpoints: Array<CheckpointImpl>;
     private readonly resourcesTree: Array<ResourceImpl>;
     private readonly scheduleViewType: ScheduleViewType;
 
     constructor(props: ScheduleProps) {
         const {
-            start, end, resources, events, milestones, lineHeight, slotMinWidth, scheduleMaxHeight, scheduleViewType,
+            start, end, resources, events, milestones, checkpoints, lineHeight, slotMinWidth, scheduleMaxHeight, scheduleViewType,
             specialWorkdays, companyHolidays, nationalHolidays, resourceAreaColumns
         } = props;
         this.scheduleProps = props;
         this.events = events.map(event => new EventImpl(event));
         this.milestones = milestones?.map(milestone => new MilestoneImpl(milestone)) || [];
+        this.checkpoints = checkpoints?.map(checkpoint => new CheckpointImpl(checkpoint)) || [];
         this.timeline = new TimelineImpl({start, end, specialWorkdays, companyHolidays, nationalHolidays});
-        const resourceImplBuilder = new ResourceImplBuilder(resources, this.events, this.milestones);
+        const resourceImplBuilder = new ResourceImplBuilder(resources, this.events, this.milestones, this.checkpoints);
         this.resourcesTree = resourceImplBuilder.builderTree();
         this.resources = ScheduleUtil.flatMapResources(this.resourcesTree);
         this.events.forEach(event => event.resource = this.resources.find(r => r.id === event.resourceId));
@@ -188,6 +208,10 @@ export class ScheduleImpl implements ScheduleApi {
 
     public getMilestones(): Array<MilestoneApi> {
         return this.milestones;
+    }
+
+    public getCheckpoints(): Array<CheckpointApi> {
+        return this.checkpoints;
     }
 
     public getTimeline(): TimelineImpl {
@@ -267,6 +291,30 @@ export class ScheduleImpl implements ScheduleApi {
     public milestoneWillUnmount(arg: MilestoneMountArg) {
         const milestoneWillUnmount = this.scheduleProps.milestoneWillUnmount;
         milestoneWillUnmount && milestoneWillUnmount(arg);
+    }
+
+    public checkpointContextMenu() {
+        const enable = this.scheduleProps.checkpointContextMenu;
+        return enable as boolean;
+    }
+
+    public checkpointContextMenuItems() {
+        return this.scheduleProps.checkpointContextMenuItems;
+    }
+
+    public checkpointContextMenuClick(arg: CheckpointContextMenuArg) {
+        const checkpointContextMenuClick = this.scheduleProps.checkpointContextMenuClick;
+        checkpointContextMenuClick && checkpointContextMenuClick(arg);
+    }
+
+    public checkpointDidMount(arg: CheckpointMountArg) {
+        const checkpointDidMount = this.scheduleProps.checkpointDidMount;
+        checkpointDidMount && checkpointDidMount(arg);
+    }
+
+    public checkpointWillUnmount(arg: CheckpointMountArg) {
+        const checkpointWillUnmount = this.scheduleProps.checkpointWillUnmount;
+        checkpointWillUnmount && checkpointWillUnmount(arg);
     }
 
     public eventContextMenu() {
