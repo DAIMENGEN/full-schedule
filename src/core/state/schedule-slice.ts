@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {ResourceImpl} from "../structs/resource-struct";
 
-interface ScheduleState {
+export interface ScheduleState {
     collapseResources: Array<ResourceImpl>;
     resourceAreaWidth: string;
 }
