@@ -12,8 +12,7 @@ type Props = {
 }
 export const ScheduleGanttChartTimelineCheckpoint: React.FC<Props> = ({checkpoint, schedule}) => {
 
-    const timelineCheckpoint = useRef<HTMLDivElement>(null);
-    const tooltip = checkpoint.tooltip || checkpoint.title;
+    const timelineCheckpoint = useRef<HTMLDivElement | null>(null);
     const checkpointColor = checkpoint.color || "#FFA500"
     const checkpointIcon = new ScheduleCheckpointIconSvg(checkpointColor, ScheduleUtil.numberToPixels(schedule.getLineHeight() * 0.6), ScheduleUtil.numberToPixels(schedule.getLineHeight() * 0.6));
 
@@ -68,7 +67,7 @@ export const ScheduleGanttChartTimelineCheckpoint: React.FC<Props> = ({checkpoin
                       }
                   }}>
             <div className={`schedule-timeline-checkpoint`} ref={timelineCheckpoint}>
-                <Tooltip title={tooltip} color={`#ffffff`} overlayStyle={{maxWidth: 1000, minWidth: 50}}>
+                <Tooltip title={checkpoint.tooltip} color={`#ffffff`} overlayStyle={{maxWidth: 1000, minWidth: 50}}>
                     <div className={`schedule-checkpoint-main`}>
                         {checkpointIcon.render()}
                     </div>

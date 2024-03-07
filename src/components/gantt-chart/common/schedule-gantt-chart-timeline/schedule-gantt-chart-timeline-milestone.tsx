@@ -11,9 +11,8 @@ type Props = {
 }
 export const ScheduleGanttChartTimelineMilestone: React.FC<Props> = ({milestone, schedule}) => {
 
-    const timelineMilestone = useRef<HTMLDivElement>(null);
+    const timelineMilestone = useRef<HTMLDivElement | null>(null);
     const status = milestone.status;
-    const tooltip = milestone.tooltip || milestone.title;
     const milestoneColor = status === "Success" ? "#00B050" : (status === "Failure" ? "#FF0000" : (status === "Warning" ? "#FFC000" : "#91003c"));
     const flag02Icon = new ScheduleFlagIconSvg(milestoneColor, ScheduleUtil.numberToPixels(schedule.getLineHeight() * 0.7), ScheduleUtil.numberToPixels(schedule.getLineHeight() * 0.7));
 
@@ -54,7 +53,7 @@ export const ScheduleGanttChartTimelineMilestone: React.FC<Props> = ({milestone,
                       }
                   }} trigger={["contextMenu"]}>
             <div className={`schedule-timeline-milestone`} ref={timelineMilestone}>
-                <Tooltip title={tooltip} color={`#ffffff`} overlayStyle={{maxWidth: 1000, minWidth: 50}}>
+                <Tooltip title={milestone.tooltip} color={`#ffffff`} overlayStyle={{maxWidth: 1000, minWidth: 50}}>
                     <div className={`schedule-milestone-main`}>
                         {flag02Icon.render()}
                     </div>

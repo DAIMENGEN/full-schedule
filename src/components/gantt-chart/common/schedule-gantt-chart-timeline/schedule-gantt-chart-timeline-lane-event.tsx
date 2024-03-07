@@ -2,28 +2,22 @@ import React, {useEffect, useRef} from "react";
 import dayjs from "dayjs";
 import {ScheduleImpl} from "../../../../core/structs/schedule-struct";
 import {EventImpl} from "../../../../core/structs/event-struct";
-import {Dropdown, Progress, Tooltip} from "antd";
-import {ScheduleUtil} from "../../../../utils/schedule-util";
+import {Dropdown, Tooltip} from "antd";
 
 type Props = {
     event: EventImpl;
     schedule: ScheduleImpl;
 }
 export const ScheduleGanttChartTimelineLaneEvent: React.FC<Props> = ({event,schedule}) => {
-    
-    const title = event.title;
-    const color = event.color;
-    const start = event.range.start;
-    const end = event.range.end;
-    const timelineLaneEvent = useRef<HTMLDivElement>(null);
 
+    const timelineLaneEvent = useRef<HTMLDivElement | null>(null);
     const isPast = event.range.end.isBefore(dayjs(), "day");
     const isFuture = event.range.start.isAfter(dayjs(), "day");
     const isProcess = event.range.start.isSameOrBefore(dayjs(), "day") && (event.range.end.isAfter(dayjs(), "day") || event.range.end.isSame(dayjs(), "day"));
     
     useEffect(() => {
-        if (timelineLaneEvent.current) {
-            const element = timelineLaneEvent.current;
+        const element = timelineLaneEvent.current;
+        if (element) {
             schedule.eventDidMount({
                 el: element,
                 event: event,
@@ -66,25 +60,10 @@ export const ScheduleGanttChartTimelineLaneEvent: React.FC<Props> = ({event,sche
                           });
                       }
                   }} trigger={["contextMenu"]}>
-            <div className={`schedule-timeline-event`} style={{backgroundColor: color}} ref={timelineLaneEvent}>
-                <Tooltip title={
-                    <div>
-                        <div style={{color: "#000000", fontSize: 18}}>
-                            <div>
-                                <span>{title}</span>
-                            </div>
-                            <div>
-                                <span>start:&nbsp; {start.format("YYYY-MM-DD")}</span>
-                            </div>
-                            <div>
-                                <span>end&nbsp;:&nbsp; {end.format("YYYY-MM-DD")}</span>
-                            </div>
-                        </div>
-                        <Progress strokeColor={color} percent={ScheduleUtil.calculateDatePercent(start, end)} />
-                    </div>
-                } color={"#FFFFFF"} key={color} overlayStyle={{maxWidth: 600, minWidth: 300}}>
+            <div className={`schedule-timeline-event`} style={{backgroundColor: event.color}} ref={timelineLaneEvent}>
+                <Tooltip title={event.tooltip} color={"#ffffff"} overlayStyle={{maxWidth: 1000, minWidth: 300}}>
                     <div className={`schedule-event-main`}>
-                        {title}
+                        {event.title}
                     </div>
                 </Tooltip>
             </div>

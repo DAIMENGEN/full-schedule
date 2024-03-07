@@ -1,3 +1,4 @@
+import * as React from "react";
 import * as dayjs from "dayjs";
 import {FullScheduleEvent} from "../../dist";
 
@@ -10,7 +11,20 @@ export const mockEvents: Array<FullScheduleEvent> = [
             start: dayjs("2023-08-01"),
             end: dayjs("2024-04-01")
         },
-        resourceId: "8968845952632643583"
+        resourceId: "8968845952632643583",
+        tooltip: <div>
+            <div style={{color: "#000000", fontSize: 18}}>
+                <div>
+                    <span>Transfer to ATJ for learning and working</span>
+                </div>
+                <div>
+                    <span>start:&nbsp; 2023-08-01</span>
+                </div>
+                <div>
+                    <span>end:&nbsp; 2024-04-01</span>
+                </div>
+            </div>
+        </div>
     },
     {
         id: "8858562325095899135",

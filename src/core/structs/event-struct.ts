@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import {ResourceApi} from "./resource-struct";
 import {ScheduleApi} from "./schedule-struct";
 import {TemporalState} from "../timelib/time-lib";
+import React from "react";
 
 export type EventContextMenuItems = MenuItems;
 
@@ -22,6 +23,7 @@ export interface Event {
     color: string
     range: DateRange;
     resourceId: string;
+    tooltip?: React.JSX.Element;
     extendedProps?: Dictionary;
 }
 
@@ -38,6 +40,8 @@ export interface EventApi {
 
     getResource(): ResourceApi | undefined;
 
+    getTooltip(): React.JSX.Element | undefined;
+
     getExtendProps(): Dictionary | undefined;
 }
 
@@ -48,6 +52,7 @@ export class EventImpl implements EventApi {
     range: DateRange;
     resource?: ResourceApi;
     resourceId: string;
+    tooltip?: React.JSX.Element;
     extendedProps?: Dictionary;
 
     constructor(event: Event) {
@@ -55,6 +60,7 @@ export class EventImpl implements EventApi {
         this.title = event.title;
         this.color = event.color;
         this.range = event.range;
+        this.tooltip = event.tooltip;
         this.resourceId = event.resourceId;
         this.extendedProps = event.extendedProps;
     }
@@ -81,6 +87,10 @@ export class EventImpl implements EventApi {
 
     getResource(): ResourceApi | undefined {
         return this.resource;
+    }
+
+    getTooltip(): React.JSX.Element | undefined {
+        return this.tooltip;
     }
 
     getExtendProps(): Dictionary | undefined {

@@ -333,7 +333,7 @@ export class ScheduleGanttChartView {
                                 {
                                     targetCheckpoints.filter(checkpoint => (checkpoint.range.start.isAfter(timeline.getStart(), "day") || checkpoint.range.start.isSame(timeline.getStart(), "day")) && checkpoint.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(checkpoint => {
                                         const height = this.schedule.getLineHeight() * 0.7;
-                                        const top = (lineHeight - height) / 6;
+                                        const top = (lineHeight - height) / 8;
                                         const position = this.schedule.calculatePosition(checkpoint.range.start, checkpoint.range.end, timelineWidth, this.scheduleViewType);
                                         return (
                                             <div className={`schedule-timeline-checkpoint-harness`} style={{
