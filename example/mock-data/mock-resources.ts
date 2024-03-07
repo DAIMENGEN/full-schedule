@@ -1,4 +1,6 @@
-export const mockResources = [
+import {FullScheduleResource} from "../../dist";
+
+export const mockResources: Array<FullScheduleResource> = [
     {
         id: "8968845952632643583",
         title: "Transfer to ATJ for learning and working",

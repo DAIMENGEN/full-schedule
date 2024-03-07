@@ -12,7 +12,6 @@ export type MilestoneStatus = "Success" | "Failure" | "Warning";
 export interface MilestoneArg {
     schedule: ScheduleApi;
     milestone: MilestoneApi;
-    achieved: Boolean;
 }
 
 export type MilestoneMountArg = MountArg<MilestoneArg>;
@@ -24,7 +23,6 @@ export interface Milestone {
     title: string;
     range: DateRange;
     status: MilestoneStatus;
-    achieved: Boolean;
     resourceId: string;
     tooltip?: React.JSX.Element;
     extendedProps?: Dictionary;
@@ -41,8 +39,6 @@ export interface MilestoneApi {
 
     getStatus(): MilestoneStatus;
 
-    isAchieved(): Boolean;
-
     getResource(): ResourceApi | undefined;
 
     getTooltip(): React.JSX.Element | undefined;
@@ -55,7 +51,6 @@ export class MilestoneImpl implements MilestoneApi {
     title: string;
     range: DateRange;
     status: MilestoneStatus;
-    achieved: Boolean;
     resource?: ResourceApi;
     resourceId: string;
     tooltip?: React.JSX.Element;
@@ -68,7 +63,6 @@ export class MilestoneImpl implements MilestoneApi {
         this.range = milestone.range;
         this.status = milestone.status;
         this.tooltip = milestone.tooltip;
-        this.achieved = milestone.achieved;
         this.resourceId = milestone.resourceId;
         this.extendedProps = milestone.extendedProps;
     }
@@ -91,10 +85,6 @@ export class MilestoneImpl implements MilestoneApi {
 
     getStatus(): MilestoneStatus {
         return this.status;
-    }
-
-    isAchieved(): Boolean {
-        return this.achieved;
     }
 
     getResource(): ResourceApi | undefined {

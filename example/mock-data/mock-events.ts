@@ -1,6 +1,7 @@
 import * as dayjs from "dayjs";
+import {FullScheduleEvent} from "../../dist";
 
-export const mockEvents = [
+export const mockEvents: Array<FullScheduleEvent> = [
     {
         id: "8968845952632643583",
         title: "Transfer to ATJ for learning and working",

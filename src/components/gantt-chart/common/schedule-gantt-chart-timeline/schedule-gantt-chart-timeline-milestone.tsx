@@ -23,14 +23,12 @@ export const ScheduleGanttChartTimelineMilestone: React.FC<Props> = ({milestone,
             schedule.milestoneDidMount({
                 el: element,
                 milestone: milestone,
-                achieved: milestone.achieved,
                 schedule: schedule
             });
             return () => {
                 schedule.milestoneWillUnmount({
                     el: element,
                     milestone: milestone,
-                    achieved: milestone.achieved,
                     schedule: schedule
                 });
             }
@@ -49,7 +47,6 @@ export const ScheduleGanttChartTimelineMilestone: React.FC<Props> = ({milestone,
                           schedule.milestoneContextMenuClick({
                               schedule: schedule,
                               milestone: milestone,
-                              achieved: milestone.isAchieved(),
                               key: key,
                               keyPath: keyPath,
                               domEvent: domEvent,
