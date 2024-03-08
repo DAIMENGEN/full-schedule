@@ -65,7 +65,7 @@ export const ScheduleGanttChartTimelineCheckpoint: React.FC<Props> = ({checkpoin
                               isProcess: isProcess,
                           });
                       }
-                  }}>
+                  }} trigger={["contextMenu"]}>
             <div className={`schedule-timeline-checkpoint`} ref={timelineCheckpoint}>
                 <Tooltip title={checkpoint.tooltip} color={`#ffffff`} overlayStyle={{maxWidth: 1000, minWidth: 50}}>
                     <div className={`schedule-checkpoint-main`}>
