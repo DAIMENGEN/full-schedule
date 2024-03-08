@@ -1,13 +1,12 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {ResourceImpl} from "../structs/resource-struct";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export interface ScheduleState {
-    collapseResources: Array<ResourceImpl>;
+    collapseResourceIds: Array<string>;
     resourceAreaWidth: string;
 }
 
 const initialState: ScheduleState = {
-    collapseResources: [],
+    collapseResourceIds: [],
     resourceAreaWidth: "20%"
 }
 
@@ -15,11 +14,11 @@ const scheduleSlice = createSlice({
     name: "schedule",
     initialState,
     reducers: {
-        collapseResource(state, action: PayloadAction<ResourceImpl>) {
-            state.collapseResources = [...state.collapseResources, action.payload];
+        collapseResource(state, action: PayloadAction<string>) {
+            state.collapseResourceIds = [...state.collapseResourceIds, action.payload];
         },
-        expandedResource(state, action: PayloadAction<ResourceImpl>) {
-          state.collapseResources = state.collapseResources.filter(resource => resource.id !== action.payload.id)
+        expandedResource(state, action: PayloadAction<string>) {
+          state.collapseResourceIds = state.collapseResourceIds.filter(resourceId => resourceId !== action.payload);
         },
         changeResourceAreaWidth(state, action: PayloadAction<string>) {
             const oldWidth = state.resourceAreaWidth;

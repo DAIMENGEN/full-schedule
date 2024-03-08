@@ -58,7 +58,7 @@ export class ScheduleGanttChartView {
         )
     }
 
-    renderDatagridBody(collapseResources: Array<ResourceImpl>): React.JSX.Element {
+    renderDatagridBody(collapseResourceIds: Array<string>): React.JSX.Element {
         const renderResource = (resource: ResourceImpl) => {
             return this.schedule.getResourceAreaColumns().map((column, index) => (
                 <td key={column.field} role={`gridcell`} data-resource-id={resource.id} className={`schedule-datagrid-cell schedule-resource`}>
@@ -67,7 +67,7 @@ export class ScheduleGanttChartView {
             ))
         }
         const renderTableRows = (resource: ResourceImpl): Array<React.JSX.Element> => {
-            if (!collapseResources.some((r: ResourceImpl) => r.id === resource.id) && resource.children.length > 0) {
+            if (!collapseResourceIds.some((resourceId: string) => resourceId === resource.id) && resource.children.length > 0) {
                 const children = resource.children;
                 return [<tr key={resource.id} role={`row`}>{renderResource(resource)}</tr>, ...children.flatMap(child => renderTableRows(child))];
             } else {
@@ -281,7 +281,7 @@ export class ScheduleGanttChartView {
         }
     }
 
-    renderTimelineElements(collapseResources: Array<ResourceImpl>, timelineWidth: number): React.JSX.Element {
+    renderTimelineElements(collapseResourceIds: Array<string>, timelineWidth: number): React.JSX.Element {
 
         const timeline = this.schedule.getTimeline();
         const draw_elements = (resource: ResourceImpl) => {
@@ -359,7 +359,7 @@ export class ScheduleGanttChartView {
             )
         }
         const render = (resource: ResourceImpl): Array<React.JSX.Element> => {
-            if (!collapseResources.some(r => r.id === resource.id) && resource.children.length > 0) {
+            if (!collapseResourceIds.some(resourceId => resourceId === resource.id) && resource.children.length > 0) {
                 const children = resource.children;
                 return [draw_elements(resource), ...children.flatMap(child => render(child))];
             } else {

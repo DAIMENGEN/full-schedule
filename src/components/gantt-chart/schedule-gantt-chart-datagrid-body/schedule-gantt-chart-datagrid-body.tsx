@@ -11,11 +11,11 @@ type Props = {
 }
 export const ScheduleGanttChartDatagridBody: React.FC<Props> = ({schedule}) => {
     const scheduleView = new ScheduleGanttChartView(schedule);
-    const collapseResources = useScheduleSelector((state) => state.scheduleState.collapseResources);
+    const collapseResourceIds = useScheduleSelector((state) => state.scheduleState.collapseResourceIds);
     return (
         <ScheduleGanttChartResourceTable id={`schedule-datagrid-body`}
                                          className={`schedule-datagrid-body`}
                                          scheduleView={scheduleView}
-                                         children={scheduleView.renderDatagridBody(collapseResources)}/>
+                                         children={scheduleView.renderDatagridBody(collapseResourceIds)}/>
     )
 }

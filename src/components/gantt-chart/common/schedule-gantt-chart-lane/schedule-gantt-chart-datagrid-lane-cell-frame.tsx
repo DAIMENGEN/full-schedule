@@ -24,7 +24,7 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
                                                                              resourceAreaColumn
                                                                          }) => {
     const datagridCell = useRef<HTMLDivElement>(null);
-    const collapseResources = useScheduleSelector((state) => state.scheduleState.collapseResources);
+    const collapseResourceIds = useScheduleSelector((state) => state.scheduleState.collapseResourceIds);
     const scheduleDispatch = useScheduleDispatch();
     const getResourceColumnValue = (column: string, resource: Resource): string | number | undefined => {
         const properties = Object.keys(resource);
@@ -107,11 +107,11 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
                                 }
                                     <span className={`schedule-icon`}>
                                     {
-                                        collapseResources.some((r: ResourceImpl) => r.id === currentResource.id) ?
+                                        collapseResourceIds.some((resourceId: string) => resourceId === currentResource.id) ?
                                             <PlusSquareOutlined
-                                                onClick={() => scheduleDispatch(expandedResource(currentResource))}/> :
+                                                onClick={() => scheduleDispatch(expandedResource(currentResource.id))}/> :
                                             currentResource.children.length > 0 ? <MinusSquareOutlined
-                                                onClick={() => scheduleDispatch(collapseResource(currentResource))}/> : ""
+                                                onClick={() => scheduleDispatch(collapseResource(currentResource.id))}/> : ""
                                     }
                                 </span>
                             </span>

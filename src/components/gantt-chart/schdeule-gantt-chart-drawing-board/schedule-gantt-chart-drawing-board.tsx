@@ -12,10 +12,10 @@ export const ScheduleGanttChartDrawingBoard: React.FC<Props> = ({schedule}) => {
     const timeline = schedule.getTimeline();
     const timelineWidth = useTimelineWidth(timeline);
     const scheduleView = new ScheduleGanttChartView(schedule);
-    const collapseResources = useScheduleSelector((state) => state.scheduleState.collapseResources);
+    const collapseResourceIds = useScheduleSelector((state) => state.scheduleState.collapseResourceIds);
     return (
         <table aria-hidden={true} id={`schedule-drawing-board`} className={`schedule-scrollgrid-sync-table`} style={{width: ScheduleUtil.numberToPixels(timelineWidth)}}>
-            {scheduleView.renderTimelineElements(collapseResources, timelineWidth)}
+            {scheduleView.renderTimelineElements(collapseResourceIds, timelineWidth)}
         </table>
     )
 }
