@@ -1,10 +1,10 @@
 import React, {useEffect, useRef} from "react";
 import {ScheduleUtil} from "../../../utils/schedule-util";
-import {useScheduleDispatch, useScheduleSelector} from "../../../core/state/schedule-hook";
-import {changeResourceAreaWidth} from "../../../core/state/schedule-slice";
+import {useScheduleDispatch, useScheduleSelector} from "../../../core/features/schedule-hook";
+import {changeResourceAreaWidth} from "../../../core/features/resource/resource-slice";
 
 export const ScheduleGanttChartTableColgroup = () => {
-    const resourceAreaWidth = useScheduleSelector(state => state.scheduleState.resourceAreaWidth);
+    const resourceAreaWidth = useScheduleSelector(state => state.resourceState.resourceAreaWidth);
     const isResizing = useRef<boolean>(false);
     const colRef = useRef<HTMLTableColElement | null>(null)
     const scheduleDispatch = useScheduleDispatch();

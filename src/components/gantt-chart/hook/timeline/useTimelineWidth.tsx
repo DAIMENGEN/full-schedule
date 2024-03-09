@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import {TimelineImpl} from "../../../../core/structs/timeline-struct";
-import {useScheduleSelector} from "../../../../core/state/schedule-hook";
+import {useScheduleSelector} from "../../../../core/features/schedule-hook";
 
 export const useTimelineWidth = (scheduleTimeline: TimelineImpl) => {
     const getTimelineWidth = useCallback(() => {
@@ -11,7 +11,7 @@ export const useTimelineWidth = (scheduleTimeline: TimelineImpl) => {
         return timelineWidth ? timelineWidth : 0;
     }, []);
     const [width, setWidth] = useState(0);
-    const resourceAreaWidth = useScheduleSelector(state => state.scheduleState.resourceAreaWidth);
+    const resourceAreaWidth = useScheduleSelector(state => state.resourceState.resourceAreaWidth);
     useEffect(() => {
         setWidth(getTimelineWidth());
         const windowResizeListener = (_: UIEvent) => setWidth(getTimelineWidth());

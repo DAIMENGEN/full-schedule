@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect, useMemo, useRef} from "react";
 import {ScheduleImpl} from "../../../../core/structs/schedule-struct";
-import {useScheduleDispatch, useScheduleSelector} from "../../../../core/state/schedule-hook";
+import {useScheduleDispatch, useScheduleSelector} from "../../../../core/features/schedule-hook";
 import {ScheduleUtil} from "../../../../utils/schedule-util";
 import {Dropdown, Space} from "antd";
 import {Resource, ResourceAreaColumn, ResourceImpl, ResourceType} from "../../../../core/structs/resource-struct";
 import {MinusSquareOutlined, PlusSquareOutlined} from "@ant-design/icons";
-import {collapseResource, expandedResource} from "../../../../core/state/schedule-slice";
 import {ScheduleMilestoneIconSvg} from "../../../../core/icon/svg-icon/schedule-milestone-icon-svg";
 import {ScheduleRecurringIconSvg} from "../../../../core/icon/svg-icon/schedule-recurring-icon-svg";
+import {collapseResource, expandedResource} from "../../../../core/features/resource/resource-slice";
 
 type Props = {
     schedule: ScheduleImpl;
@@ -24,7 +24,7 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
                                                                              resourceAreaColumn
                                                                          }) => {
     const datagridCell = useRef<HTMLDivElement>(null);
-    const collapseResourceIds = useScheduleSelector((state) => state.scheduleState.collapseResourceIds);
+    const collapseResourceIds = useScheduleSelector((state) => state.resourceState.collapseIds);
     const scheduleDispatch = useScheduleDispatch();
     const getResourceColumnValue = (column: string, resource: Resource): string | number | undefined => {
         const properties = Object.keys(resource);

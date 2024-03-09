@@ -4,16 +4,16 @@ import * as ReactDOM from "react-dom/client";
 import * as dayjs from "dayjs";
 import {mockResources} from "./mock-data/mock-resources";
 import {mockEvents} from "./mock-data/mock-events";
-import {FullScheduleGanttChart} from "../dist";
 import "../dist/full-schedule.css";
 import {mockMilestones} from "./mock-data/mock-milestones";
 import "./index.scss";
 import {mockCheckpoints} from "./mock-data/mock-checkpoints";
+import {FullSchedule} from "../dist";
 
 const App = () => {
     return (
         <div className={`schedule`}>
-            <FullScheduleGanttChart start={dayjs("2021-01-01")}
+            <FullSchedule start={dayjs("2021-01-01")}
                                     end={dayjs("2025-02-23")}
                                     resources={mockResources}
                                     events={mockEvents}

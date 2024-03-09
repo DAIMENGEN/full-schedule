@@ -1,4 +1,4 @@
-export {default as FullScheduleGanttChart} from "./components/gantt-chart/schedule-gantt-chart";
+export {default as FullSchedule} from "./components/schedule";
 export {Event as FullScheduleEvent} from "./core/structs/event-struct";
 export {EventApi as FullScheduleEventApi} from "./core/structs/event-struct";
 export {Milestone as FullScheduleMilestone} from "./core/structs/milestone-struct";

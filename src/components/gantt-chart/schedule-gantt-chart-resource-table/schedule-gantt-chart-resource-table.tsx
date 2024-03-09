@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {ScheduleUtil} from "../../../utils/schedule-util";
-import {useScheduleSelector} from "../../../core/state/schedule-hook";
+import {useScheduleSelector} from "../../../core/features/schedule-hook";
 import {ScheduleGanttChartView} from "../schedule-gantt-chart-view";
 
 type Props = {
@@ -17,7 +17,7 @@ export const ScheduleGanttChartResourceTable: React.FC<Props> = ({id, className,
         const cell = row?.cells.item(0);
         return cell ? cell.clientWidth : 0;
     }, []);
-    const resourceAreaWidth = useScheduleSelector((state) => state.scheduleState.resourceAreaWidth);
+    const resourceAreaWidth = useScheduleSelector((state) => state.resourceState.resourceAreaWidth);
     useEffect(() => {
         setResourceTableWidth(getResourceTableWidth);
         const resizeListener = (_: UIEvent) => setResourceTableWidth(getResourceTableWidth);
