@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-interface ResourceState {
+export interface ResourceState {
     collapseIds: Array<string>;
     resourceAreaWidth: string;
 }
