@@ -60,10 +60,12 @@ export const ScheduleGanttChartTimelineLaneEvent: React.FC<Props> = ({event,sche
                           });
                       }
                   }} trigger={["contextMenu"]}>
-            <div className={`schedule-timeline-event`} style={{backgroundColor: event.color}} ref={timelineLaneEvent}>
+            <div className={`schedule-timeline-event`} style={{backgroundColor: event.backgroundColor || event.color, border: `1px solid ${event.borderColor || event.color}`}} ref={timelineLaneEvent}>
                 <Tooltip title={event.tooltip} color={"#ffffff"} overlayStyle={{maxWidth: 1000, minWidth: 300}}>
-                    <div className={`schedule-event-main`}>
-                        {event.title}
+                    <div className={`schedule-event-main`} style={{color: event.textColor || "white"}}>
+                        {
+                            event.url ? <a href={event.url} style={{color: "inherit"}}>{event.title}</a> : <span>{event.title}</span>
+                        }
                     </div>
                 </Tooltip>
             </div>
