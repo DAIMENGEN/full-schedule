@@ -1,3 +1,10 @@
 .schedule {
-  padding: 10px;
+  .schedule-header {
+    margin: 10px;
+  }
+
+  .schedule-body {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }
