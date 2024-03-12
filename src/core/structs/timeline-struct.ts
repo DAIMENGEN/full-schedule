@@ -89,7 +89,7 @@ export class TimelineImpl implements TimelineApi {
             quarters: {},
             days: []
         };
-        while (currentDate.isSameOrBefore(end)) {
+        while (currentDate.isSameOrBefore(end, "day")) {
             // calculate year.
             const yearKey = currentDate.startOf("year").format("YYYY-MM-DD");
             result.years[yearKey] = result.years[yearKey] || [];
@@ -105,7 +105,7 @@ export class TimelineImpl implements TimelineApi {
             // calculate day.
             result.days.push(currentDate.clone());
             // next loop.
-            currentDate = currentDate.add(1, 'day');
+            currentDate = currentDate.add(1, "day");
         }
         this.timelineDate = result;
     }
