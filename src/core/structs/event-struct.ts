@@ -23,7 +23,11 @@ export interface Event {
     color: string
     range: DateRange;
     resourceId: string;
+    url?: string;
     tooltip?: React.JSX.Element;
+    textColor?: string;
+    borderColor?: string;
+    backgroundColor?: string;
     extendedProps?: Dictionary;
 }
 
@@ -40,7 +44,15 @@ export interface EventApi {
 
     getResource(): ResourceApi | undefined;
 
+    getUrl(): string | undefined;
+
     getTooltip(): React.JSX.Element | undefined;
+
+    getTextColor(): string | undefined;
+
+    getBorderColor(): string | undefined;
+
+    getBackgroundColor(): string | undefined;
 
     getExtendProps(): Dictionary | undefined;
 }
@@ -50,19 +62,27 @@ export class EventImpl implements EventApi {
     title: string;
     color: string
     range: DateRange;
-    resource?: ResourceApi;
     resourceId: string;
+    url?: string;
+    resource?: ResourceApi;
     tooltip?: React.JSX.Element;
+    textColor?: string;
+    borderColor?: string;
+    backgroundColor?: string;
     extendedProps?: Dictionary;
 
     constructor(event: Event) {
         this.id = event.id;
+        this.url = event.url;
         this.title = event.title;
         this.color = event.color;
         this.range = event.range;
         this.tooltip = event.tooltip;
+        this.textColor = event.textColor;
         this.resourceId = event.resourceId;
+        this.borderColor = event.borderColor;
         this.extendedProps = event.extendedProps;
+        this.backgroundColor = event.backgroundColor;
     }
 
     getId(): string {
@@ -85,12 +105,28 @@ export class EventImpl implements EventApi {
         return this.range.end;
     }
 
+    getUrl(): string | undefined {
+        return this.url;
+    }
+
     getResource(): ResourceApi | undefined {
         return this.resource;
     }
 
     getTooltip(): React.JSX.Element | undefined {
         return this.tooltip;
+    }
+
+    getTextColor(): string | undefined {
+        return this.textColor;
+    }
+
+    getBorderColor(): string | undefined {
+        return this.borderColor;
+    }
+
+    getBackgroundColor(): string | undefined {
+        return this.backgroundColor;
     }
 
     getExtendProps(): Dictionary | undefined {

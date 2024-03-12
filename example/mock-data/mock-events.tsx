@@ -134,7 +134,10 @@ export const mockEvents: Array<FullScheduleEvent> = [
             start: dayjs("2021-01-01"),
             end: dayjs("2024-12-30")
         },
-        resourceId: "8638818878966724025"
+        resourceId: "8638818878966724025",
+        textColor: "red",
+        borderColor: "red",
+        backgroundColor: "green",
     },
     {
         id: "3382749776007979989",
@@ -218,12 +221,14 @@ export const mockEvents: Array<FullScheduleEvent> = [
     },
     {
         id: "8023584809911544803",
+        url: "https://fullcalendar.io/",
         title: "New Echo System",
         color: "#000000",
         range: {
             start: dayjs("2024-03-01"),
             end: dayjs("2024-04-30")
         },
+        textColor: "red",
         resourceId: "8023584809911544803"
     },
     {
