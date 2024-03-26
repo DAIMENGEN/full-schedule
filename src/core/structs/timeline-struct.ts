@@ -32,6 +32,7 @@ export type TimelineData = {
     years: Record<string, dayjs.Dayjs[]>;
     months: Record<string, dayjs.Dayjs[]>;
     quarters: Record<string, dayjs.Dayjs[]>;
+    weeks: Record<string, dayjs.Dayjs[]>;
     days: dayjs.Dayjs[];
 }
 
@@ -47,14 +48,17 @@ export interface TimelineApi {
     getStart(): dayjs.Dayjs;
     getEnd(): dayjs.Dayjs;
     getDays(): Array<dayjs.Dayjs>;
+    getWeeks(): Array<dayjs.Dayjs>;
     getMonths(): Array<dayjs.Dayjs>;
     getQuarters(): Array<dayjs.Dayjs>;
     getYears(): Array<dayjs.Dayjs>;
     getDayPosition(target: dayjs.Dayjs): number;
+    getWeekPosition(target: dayjs.Dayjs): number;
     getMonthPosition(target: dayjs.Dayjs): number;
     getQuarterPosition(target: dayjs.Dayjs): number;
     getYearPosition(target: dayjs.Dayjs): number;
     getMonthsAndDays(): Array<{ month: dayjs.Dayjs, days: Array<dayjs.Dayjs> }>;
+    getMonthsAndWeeks(): Array<{ month: dayjs.Dayjs, weeks: Array<dayjs.Dayjs> }>;
     getYearsAndDays(): Array<{ year: dayjs.Dayjs, days: Array<dayjs.Dayjs> }>;
     getYearsAndMonths(): Array<{year: dayjs.Dayjs, months: Array<dayjs.Dayjs>}>;
     getYearsAndQuarters(): Array<{ year: dayjs.Dayjs, quarters: Array<dayjs.Dayjs> }>;
@@ -87,6 +91,7 @@ export class TimelineImpl implements TimelineApi {
             years: {},
             months: {},
             quarters: {},
+            weeks: {},
             days: []
         };
         while (currentDate.isSameOrBefore(end, "day")) {
@@ -102,6 +107,10 @@ export class TimelineImpl implements TimelineApi {
             const monthKey = currentDate.startOf("month").format("YYYY-MM-DD");
             result.months[monthKey] = result.months[monthKey] || [];
             result.months[monthKey].push(currentDate.clone());
+            // calculate month.
+            const weekKey = currentDate.startOf("week").format("YYYY-MM-DD");
+            result.weeks[weekKey] = result.weeks[weekKey] || [];
+            result.weeks[weekKey].push(currentDate.clone());
             // calculate day.
             result.days.push(currentDate.clone());
             // next loop.
@@ -118,6 +127,9 @@ export class TimelineImpl implements TimelineApi {
     getDays(): Array<dayjs.Dayjs> {
         return this.timelineDate.days;
     }
+    getWeeks(): Array<dayjs.Dayjs> {
+        return Object.keys(this.timelineDate.weeks).map(weekKey => dayjs(weekKey));
+    }
     getMonths(): Array<dayjs.Dayjs> {
         return Object.keys(this.timelineDate.months).map(monthKey => dayjs(monthKey));
     }
@@ -129,6 +141,9 @@ export class TimelineImpl implements TimelineApi {
     }
     getDayPosition(target: dayjs.Dayjs): number {
         return this.getDays().findIndex(day => day.isSame(target, "day"));
+    }
+    getWeekPosition(target: dayjs.Dayjs): number {
+        return this.getWeeks().findIndex(week => week.isSame(target, "week"));
     }
     getMonthPosition(target: dayjs.Dayjs): number {
         return this.getMonths().findIndex(month => month.isSame(target, "month"));
@@ -149,6 +164,18 @@ export class TimelineImpl implements TimelineApi {
             monthsAndDays.push(monthAndDays);
         }
         return monthsAndDays;
+    }
+    getMonthsAndWeeks(): Array<{ month: dayjs.Dayjs; weeks: Array<dayjs.Dayjs> }> {
+        const weeks: dayjs.Dayjs[] = this.getWeeks();
+        const groupArray = ScheduleUtil.groupArray<dayjs.Dayjs>(weeks, week => week.format("YYYY-MM"));
+        const monthsAndWeeks = [];
+        for (const key in groupArray) {
+            const monthAndWeeks: { month: dayjs.Dayjs, weeks: Array<dayjs.Dayjs> } = {month: dayjs(), weeks: []};
+            monthAndWeeks.month = dayjs(key);
+            monthAndWeeks.weeks = groupArray[key];
+            monthsAndWeeks.push(monthAndWeeks);
+        }
+        return monthsAndWeeks;
     }
     getYearsAndDays(): Array<{ year: dayjs.Dayjs; days: Array<dayjs.Dayjs> }> {
         const yearsAndDays = [];

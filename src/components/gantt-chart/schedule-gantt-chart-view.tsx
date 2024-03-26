@@ -155,6 +155,31 @@ export class ScheduleGanttChartView {
                     </tr>
                     </tbody>
                 );
+            case "Week":
+                const weeks = timeline.getWeeks();
+                const monthsAndWeeks = timeline.getMonthsAndWeeks();
+                return (
+                    <tbody>
+                        <tr className={`schedule-timeline-header-row`}>
+                            {
+                                monthsAndWeeks.map(monthAndWeeks => (
+                                    <th key={monthAndWeeks.month.format("YYYY-MM")} colSpan={monthAndWeeks.weeks.length} data-date={monthAndWeeks.month.format("YYYY-MM")} className={`schedule-timeline-slot schedule-timeline-slot-label`}>
+                                        <ScheduleGanttChartTimelineSlotFrame date={monthAndWeeks.month} schedule={this.schedule} level={2} timeText={monthAndWeeks.month.format("YYYY-MM")} classNames={["schedule-month"]} />
+                                    </th>
+                                ))
+                            }
+                        </tr>
+                        <tr className={`schedule-timeline-header-row`}>
+                            {
+                                weeks.map(week => (
+                                    <th key={week.format("YYYY-MM-DD")} colSpan={1} data-date={week.format("YYYY-MM-DD")} className={`schedule-timeline-slot schedule-timeline-slot-label`}>
+                                        <ScheduleGanttChartTimelineSlotFrame date={week} schedule={this.schedule} level={2} timeText={week.week().toString()} classNames={["schedule-month"]}/>
+                                    </th>
+                                ))
+                            }
+                        </tr>
+                    </tbody>
+                )
             case "Month":
                 const months = timeline.getMonths();
                 const yearsAndMonths = timeline.getYearsAndMonths();
@@ -234,6 +259,19 @@ export class ScheduleGanttChartView {
                         {
                             days.map(day => <td key={day.format("YYYY-MM-DD")} data-date={day.format("YYYY-MM-DD")} className={`schedule-timeline-slot schedule-timeline-slot-lane`}>
                                 <ScheduleGanttChartTimelineSlotFrame schedule={this.schedule} date={day} classNames={["schedule-day", `${timeline.isHoliday(day) ? "schedule-holiday": ""}`]}/>
+                            </td>)
+                        }
+                    </tr>
+                    </tbody>
+                )
+            case "Week":
+                const weeks = timeline.getWeeks();
+                return (
+                    <tbody>
+                    <tr>
+                        {
+                            weeks.map(week => <td key={week.format("YYYY-dddd")} data-date={week.format("YYYY-dddd")} className={`schedule-timeline-slot schedule-timeline-slot-lane`}>
+                                <ScheduleGanttChartTimelineSlotFrame schedule={this.schedule} date={week} classNames={["schedule-month"]}/>
                             </td>)
                         }
                     </tr>
