@@ -177,7 +177,7 @@ export class ScheduleGanttChartView {
                             {
                                 weeks.map(week => (
                                     <th key={week.format("YYYY-MM-DD")} colSpan={1} data-date={week.format("YYYY-MM-DD")} className={`schedule-timeline-slot schedule-timeline-slot-label`}>
-                                        <ScheduleGanttChartTimelineSlotFrame date={week} schedule={this.schedule} level={2} timeText={week.startOf("week").format("MM-DD")} classNames={["schedule-week"]}/>
+                                        <ScheduleGanttChartTimelineSlotFrame date={week} schedule={this.schedule} level={2} timeText={week.startOf("week").format("MM/DD")} classNames={["schedule-week"]}/>
                                     </th>
                                 ))
                             }
@@ -186,7 +186,7 @@ export class ScheduleGanttChartView {
                             {
                                 weeks.map(week => (
                                     <th key={week.format("YYYY-MM-DD")} colSpan={1} data-date={week.format("YYYY-MM-DD")} className={`schedule-timeline-slot schedule-timeline-slot-label`}>
-                                        <ScheduleGanttChartTimelineSlotFrame date={week} schedule={this.schedule} level={3} timeText={week.endOf("week").format("MM-DD")} classNames={["schedule-week"]}/>
+                                        <ScheduleGanttChartTimelineSlotFrame date={week} schedule={this.schedule} level={3} timeText={week.endOf("week").format("MM/DD")} classNames={["schedule-week"]}/>
                                     </th>
                                 ))
                             }
