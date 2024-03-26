@@ -58,8 +58,8 @@ export interface TimelineApi {
     getQuarterPosition(target: dayjs.Dayjs): number;
     getYearPosition(target: dayjs.Dayjs): number;
     getMonthsAndDays(): Array<{ month: dayjs.Dayjs, days: Array<dayjs.Dayjs> }>;
-    getMonthsAndWeeks(): Array<{ month: dayjs.Dayjs, weeks: Array<dayjs.Dayjs> }>;
     getYearsAndDays(): Array<{ year: dayjs.Dayjs, days: Array<dayjs.Dayjs> }>;
+    getYearsAndWeeks(): Array<{ year: dayjs.Dayjs, weeks: Array<dayjs.Dayjs> }>;
     getYearsAndMonths(): Array<{year: dayjs.Dayjs, months: Array<dayjs.Dayjs>}>;
     getYearsAndQuarters(): Array<{ year: dayjs.Dayjs, quarters: Array<dayjs.Dayjs> }>;
     getSpecialWorkdays(): Array<dayjs.Dayjs>;
@@ -165,18 +165,6 @@ export class TimelineImpl implements TimelineApi {
         }
         return monthsAndDays;
     }
-    getMonthsAndWeeks(): Array<{ month: dayjs.Dayjs; weeks: Array<dayjs.Dayjs> }> {
-        const weeks: dayjs.Dayjs[] = this.getWeeks();
-        const groupArray = ScheduleUtil.groupArray<dayjs.Dayjs>(weeks, week => week.format("YYYY-MM"));
-        const monthsAndWeeks = [];
-        for (const key in groupArray) {
-            const monthAndWeeks: { month: dayjs.Dayjs, weeks: Array<dayjs.Dayjs> } = {month: dayjs(), weeks: []};
-            monthAndWeeks.month = dayjs(key);
-            monthAndWeeks.weeks = groupArray[key];
-            monthsAndWeeks.push(monthAndWeeks);
-        }
-        return monthsAndWeeks;
-    }
     getYearsAndDays(): Array<{ year: dayjs.Dayjs; days: Array<dayjs.Dayjs> }> {
         const yearsAndDays = [];
         const years = this.timelineDate.years;
@@ -187,6 +175,18 @@ export class TimelineImpl implements TimelineApi {
             yearsAndDays.push(yearAndDays);
         }
         return yearsAndDays;
+    }
+    getYearsAndWeeks(): Array<{ year: dayjs.Dayjs; weeks: Array<dayjs.Dayjs> }> {
+        const weeks: dayjs.Dayjs[] = this.getWeeks();
+        const groupArray = ScheduleUtil.groupArray<dayjs.Dayjs>(weeks, week => week.format("YYYY"));
+        const yearsAndWeeks = [];
+        for (const key in groupArray) {
+            const yearAndWeeks: { year: dayjs.Dayjs, weeks: Array<dayjs.Dayjs> } = {year: dayjs(), weeks: []};
+            yearAndWeeks.year = dayjs(key);
+            yearAndWeeks.weeks = groupArray[key];
+            yearsAndWeeks.push(yearAndWeeks);
+        }
+        return yearsAndWeeks;
     }
     getYearsAndMonths(): Array<{ year: dayjs.Dayjs; months: Array<dayjs.Dayjs> }> {
         const days = this.getDays();

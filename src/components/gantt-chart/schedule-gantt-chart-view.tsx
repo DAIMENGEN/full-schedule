@@ -91,6 +91,10 @@ export class ScheduleGanttChartView {
                 const days = timeline.getDays();
                 const days_cols = days.map(day => <col key={day.format("YYYY-MM-DD")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
                 return <colgroup>{days_cols}</colgroup>;
+            case "Week":
+                const weeks = timeline.getWeeks();
+                const weeks_cols = weeks.map(week => <col key={week.format("YYYY-MM-DD")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
+                return <colgroup>{weeks_cols}</colgroup>;
             case "Month":
                 const months = timeline.getMonths();
                 const months_cols = months.map(month => <col key={month.format("YYYY-MM")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
@@ -157,14 +161,14 @@ export class ScheduleGanttChartView {
                 );
             case "Week":
                 const weeks = timeline.getWeeks();
-                const monthsAndWeeks = timeline.getMonthsAndWeeks();
+                const yearsAndWeeks = timeline.getYearsAndWeeks();
                 return (
                     <tbody>
                         <tr className={`schedule-timeline-header-row`}>
                             {
-                                monthsAndWeeks.map(monthAndWeeks => (
-                                    <th key={monthAndWeeks.month.format("YYYY-MM")} colSpan={monthAndWeeks.weeks.length} data-date={monthAndWeeks.month.format("YYYY-MM")} className={`schedule-timeline-slot schedule-timeline-slot-label`}>
-                                        <ScheduleGanttChartTimelineSlotFrame date={monthAndWeeks.month} schedule={this.schedule} level={2} timeText={monthAndWeeks.month.format("YYYY-MM")} classNames={["schedule-month"]} />
+                                yearsAndWeeks.map(yearAndWeeks => (
+                                    <th key={yearAndWeeks.year.format("YYYY")} colSpan={yearAndWeeks.weeks.length} data-date={yearAndWeeks.year.format("YYYY")} className={`schedule-timeline-slot schedule-timeline-slot-label`}>
+                                        <ScheduleGanttChartTimelineSlotFrame date={yearAndWeeks.year} schedule={this.schedule} level={1} timeText={yearAndWeeks.year.format("YYYY")} classNames={["schedule-week"]}/>
                                     </th>
                                 ))
                             }
@@ -173,7 +177,16 @@ export class ScheduleGanttChartView {
                             {
                                 weeks.map(week => (
                                     <th key={week.format("YYYY-MM-DD")} colSpan={1} data-date={week.format("YYYY-MM-DD")} className={`schedule-timeline-slot schedule-timeline-slot-label`}>
-                                        <ScheduleGanttChartTimelineSlotFrame date={week} schedule={this.schedule} level={2} timeText={week.week().toString()} classNames={["schedule-month"]}/>
+                                        <ScheduleGanttChartTimelineSlotFrame date={week} schedule={this.schedule} level={2} timeText={week.startOf("week").format("MM-DD")} classNames={["schedule-week"]}/>
+                                    </th>
+                                ))
+                            }
+                        </tr>
+                        <tr className={`schedule-timeline-header-row`}>
+                            {
+                                weeks.map(week => (
+                                    <th key={week.format("YYYY-MM-DD")} colSpan={1} data-date={week.format("YYYY-MM-DD")} className={`schedule-timeline-slot schedule-timeline-slot-label`}>
+                                        <ScheduleGanttChartTimelineSlotFrame date={week} schedule={this.schedule} level={3} timeText={week.endOf("week").format("MM-DD")} classNames={["schedule-week"]}/>
                                     </th>
                                 ))
                             }
@@ -270,8 +283,8 @@ export class ScheduleGanttChartView {
                     <tbody>
                     <tr>
                         {
-                            weeks.map(week => <td key={week.format("YYYY-dddd")} data-date={week.format("YYYY-dddd")} className={`schedule-timeline-slot schedule-timeline-slot-lane`}>
-                                <ScheduleGanttChartTimelineSlotFrame schedule={this.schedule} date={week} classNames={["schedule-month"]}/>
+                            weeks.map(week => <td key={week.format("YYYY-MM-DD")} data-date={week.format("YYYY-MM-DD")} className={`schedule-timeline-slot schedule-timeline-slot-lane`}>
+                                <ScheduleGanttChartTimelineSlotFrame schedule={this.schedule} date={week} classNames={["schedule-week"]}/>
                             </td>)
                         }
                     </tr>

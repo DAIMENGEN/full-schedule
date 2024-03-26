@@ -20,7 +20,7 @@ const App = () => {
         <div className={`schedule`}>
             <div className={`schedule-header`}>
                 <RangePicker style={{width: 230}}
-                             picker={"week"}
+                             picker={"month"}
                              value={[scheduleStartDate, scheduleEndDate]}
                              onChange={(arg) => {
                                  if (arg) {
