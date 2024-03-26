@@ -249,6 +249,11 @@ export class ScheduleImpl implements ScheduleApi {
                 const dayLeft = this.timeline.getDayPosition(start.isBefore(this.getStart()) ? this.getStart() : start) * dayCellWidth;
                 const dayRight = (this.timeline.getDayPosition(end.isAfter(this.getEnd()) ? this.getEnd() : end) + 1) * dayCellWidth * -1;
                 return {left: dayLeft, right: dayRight};
+            case "Week":
+                const weekCellWidth = timelineWidth / this.timeline.getWeeks().length;
+                const weekLeft = this.timeline.getWeekPosition(start.isBefore(this.getStart()) ? this.getStart() : start) * weekCellWidth;
+                const weekRight = (this.timeline.getWeekPosition(end.isAfter(this.getEnd()) ? this.getEnd() : end) + 1) * weekCellWidth * -1;
+                return {left: weekLeft, right: weekRight};
             case "Month":
                 const monthCellWidth = timelineWidth / this.timeline.getMonths().length;
                 const monthLeft = this.timeline.getMonthPosition(start.isBefore(this.getStart()) ? this.getStart() : start) * monthCellWidth;

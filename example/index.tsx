@@ -20,6 +20,7 @@ const App = () => {
         <div className={`schedule`}>
             <div className={`schedule-header`}>
                 <RangePicker style={{width: 230}}
+                             picker={"month"}
                              value={[scheduleStartDate, scheduleEndDate]}
                              onChange={(arg) => {
                                  if (arg) {
@@ -41,7 +42,7 @@ const App = () => {
                               lineHeight={40}
                               slotMinWidth={50}
                               scheduleMaxHeight={800}
-                              scheduleViewType={"Day"}
+                              scheduleViewType={"Week"}
                               resourceAreaColumns={[
                                   {
                                       field: "title",
