@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from "react";
 import {ScheduleApi} from "../../../../core/structs/schedule-struct";
-import dayjs from "dayjs";
-import {ScheduleUtil} from "../../../../utils/schedule-util";
+import dayjs, {OpUnitType} from "dayjs";
 
 type Props = {
     date: dayjs.Dayjs;
@@ -15,9 +14,11 @@ export const ScheduleGanttChartTimelineSlotFrame:React.FC<Props> = ({date, level
     useEffect(() => {
         const element = timelineSlot.current;
         if (element) {
-            const isToday = date.isSame(dayjs(), ScheduleUtil.getDateUnitByScheduleViewType(schedule.getScheduleViewType()));
-            const isPast = date.isBefore(dayjs(), ScheduleUtil.getDateUnitByScheduleViewType(schedule.getScheduleViewType()));
-            const isFuture = date.isAfter(dayjs(), ScheduleUtil.getDateUnitByScheduleViewType(schedule.getScheduleViewType()));
+            const viewType = schedule.getScheduleViewType();
+            const dateUnit = viewType.toLowerCase() as OpUnitType;
+            const isToday = date.isSame(dayjs(), dateUnit);
+            const isPast = date.isBefore(dayjs(), dateUnit);
+            const isFuture = date.isAfter(dayjs(), dateUnit);
             if (timeText) {
                 schedule.timelineSlotLabelDidMount({
                     el: element,

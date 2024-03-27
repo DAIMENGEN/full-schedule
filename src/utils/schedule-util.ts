@@ -1,5 +1,4 @@
 import {ResourceImpl} from "../core/structs/resource-struct";
-import {ScheduleViewType} from "../core/structs/schedule-view-struct";
 
 export class ScheduleUtil {
     static numberToPixels(value: number): string {
@@ -30,16 +29,6 @@ export class ScheduleUtil {
     static capitalizeFirstLetter(input: string): string {
         if (input.length === 0) return input;
         return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
-    }
-
-    static getDateUnitByScheduleViewType(viewType: ScheduleViewType): "day" | "month" | "quarter" | "year" {
-        switch (viewType) {
-            case "Day": return "day";
-            case "Month": return "month";
-            case "Quarter": return "quarter";
-            case "Year": return "year";
-            default: return "day";
-        }
     }
 
     static flatMapResources(resources: Array<ResourceImpl>): Array<ResourceImpl> {
