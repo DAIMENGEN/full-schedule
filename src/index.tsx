@@ -18,3 +18,11 @@ export {ScheduleRecurringIconSvg as FullScheduleRecurringIconSvg} from "./core/i
 export {ScheduleTodayIconSvg as FullScheduleTodayIconSvg} from "./core/icon/svg-icon/schedule-today-icon-svg";
 export {ScheduleCaptureApi as FullScheduleCaptureApi} from "./core/structs/schedule-capture-struct";
 export {ScheduleCaptureImpl as FullScheduleCaptureImpl} from "./core/structs/schedule-capture-struct";
+
+export {EventMountArg as FullScheduleEventMountArg} from "./core/structs/event-struct";
+export {ResourceLaneMountArg as FullScheduleResourceLaneMountArg} from "./core/structs/resource-struct";
+export {ResourceLabelMountArg as FullScheduleResourceLabelMountArg} from "./core/structs/resource-struct";
+export {MilestoneMountArg as FullScheduleMilestoneMountArg} from "./core/structs/milestone-struct";
+export {CheckpointMountArg as FullScheduleCheckpointMountArg} from "./core/structs/checkpoint-struct";
+export {TimelineSlotLaneMountArg as FullScheduleTimelineSlotLaneMountArg} from "./core/structs/timeline-struct";
+export {TimelineSlotLabelMountArg as FullScheduleTimelineSlotLabelMountArg} from "./core/structs/timeline-struct";
