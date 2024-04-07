@@ -42,7 +42,7 @@ const App = () => {
                               lineHeight={40}
                               slotMinWidth={50}
                               scheduleMaxHeight={800}
-                              scheduleViewType={"Week"}
+                              scheduleViewType={"Day"}
                               resourceAreaColumns={[
                                   {
                                       field: "title",

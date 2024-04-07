@@ -1,5 +1,5 @@
 import React from "react";
-import {useTimelineWidth} from "../hook/timeline/useTimelineWidth";
+import {useTimelineWidth} from "../hooks/timeline/useTimelineWidth";
 import {ScheduleUtil} from "../../../utils/schedule-util";
 import {ScheduleImpl} from "../../../core/structs/schedule-struct";
 import {useScheduleSelector} from "../../../core/features/schedule-hook";
