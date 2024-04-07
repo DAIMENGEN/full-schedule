@@ -89,22 +89,22 @@ export class MonthViewStrategy implements TimelineViewStrategy {
         const months = timeline.getMonths();
         const monthCellWidth = timelineWidth / months.length;
 
-        // Determine the start and end dates within the timeline range
+        // Determine the start and end dates within the timeline range;
         const start = dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start;
         const end = dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end;
 
-        // Calculate left position
+        // Calculate left position;
         const startDate = start.date();
         const width_1 = (monthCellWidth / start.daysInMonth());
         const monthLeft = timeline.getMonthPosition(start) * monthCellWidth;
         const left = dateRange.start.isSameOrBefore(timeline.getStart()) ? monthLeft : monthLeft + (startDate * width_1);
 
-        // Calculate right position
+        // Calculate right position;
         const endDate = end.daysInMonth() - end.date();
         const width_2 = (monthCellWidth / end.daysInMonth());
         const monthRight = (timeline.getMonthPosition(end) + 1) * monthCellWidth * -1;
         const right = dateRange.end.isBefore(timeline.getEnd()) ?  monthRight + (endDate * width_2) : monthRight;
 
-        return {left: left, right: right};
+        return {left, right};
     }
 }

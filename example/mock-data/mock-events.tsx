@@ -41,8 +41,8 @@ export const mockEvents: Array<FullScheduleEvent> = [
         title: "Test Condition Monitor R1.00 for T5230",
         color: "#000000",
         range: {
-            start: dayjs("2023-07-31"),
-            end: dayjs("2024-04-27")
+            start: dayjs("2024-04-11"),
+            end: dayjs("2024-04-18")
         },
         resourceId: "4577873557542726875"
     },
@@ -174,8 +174,8 @@ export const mockEvents: Array<FullScheduleEvent> = [
         title: "RealWave R1.00",
         color: "#000000",
         range: {
-            start: dayjs("2023-09-30"),
-            end: dayjs("2024-04-29")
+            start: dayjs("2024-04-15"),
+            end: dayjs("2024-05-04")
         },
         resourceId: "2304010924003085308"
     },
