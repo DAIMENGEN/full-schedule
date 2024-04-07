@@ -111,8 +111,8 @@ export const mockEvents: Array<FullScheduleEvent> = [
         title: "Euclid Light & New Echo System (Prototype)",
         color: "#000000",
         range: {
-            start: dayjs("2023-07-01"),
-            end: dayjs("2024-02-29")
+            start: dayjs("2024-02-15"),
+            end: dayjs("2024-02-28")
         },
         resourceId: "8646207595906260967"
     },
@@ -164,8 +164,8 @@ export const mockEvents: Array<FullScheduleEvent> = [
         title: "Euclid SW R2.0",
         color: "#000000",
         range: {
-            start: dayjs("2022-03-01"),
-            end: dayjs("2023-06-30")
+            start: dayjs("2024-04-10"),
+            end: dayjs("2024-04-30")
         },
         resourceId: "9204513212332502410"
     },
