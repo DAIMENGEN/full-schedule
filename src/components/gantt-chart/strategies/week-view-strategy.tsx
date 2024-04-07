@@ -5,6 +5,8 @@ import {
     ScheduleGanttChartTimelineSlotFrame
 } from "../common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-slot-frame";
 import {ScheduleUtil} from "../../../utils/schedule-util";
+import {DateRange} from "../../../core/datelib/date-range";
+import {Position} from "../../../core/types/public-types";
 
 export class WeekViewStrategy implements TimelineViewStrategy {
     private readonly schedule: ScheduleApi;
@@ -81,5 +83,13 @@ export class WeekViewStrategy implements TimelineViewStrategy {
         const weeks = timeline.getWeeks();
         const weeks_cols = weeks.map(week => <col key={week.format("YYYY-MM-DD")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
         return <colgroup>{weeks_cols}</colgroup>;
+    }
+
+    calculatePosition(timelineWidth: number, range: DateRange): Position {
+        const timeline = this.schedule.getTimeline();
+        const weekCellWidth = timelineWidth / timeline.getWeeks().length;
+        const weekLeft = timeline.getWeekPosition(range.start.isBefore(timeline.getStart()) ? timeline.getStart() : range.start) * weekCellWidth;
+        const weekRight = (timeline.getWeekPosition(range.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : range.end) + 1) * weekCellWidth * -1;
+        return {left: weekLeft, right: weekRight};
     }
 }

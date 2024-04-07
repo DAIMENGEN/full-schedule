@@ -139,7 +139,7 @@ export class ScheduleGanttChartView {
                                     targetEvents.filter(event => !event.range.start.isAfter(timeline.getEnd()) && !event.range.end.isBefore(timeline.getStart())).map(event => {
                                         const height = this.schedule.getLineHeight() * 0.7;
                                         const top = (lineHeight - height) / 2;
-                                        const position = this.schedule.calculatePosition(event.range.start, event.range.end, timelineWidth, this.scheduleViewType);
+                                        const position = this.timelineViewStrategy.calculatePosition(timelineWidth, event.range);
                                         return (
                                             <div className={`schedule-timeline-event-harness`} style={{
                                                 left: ScheduleUtil.numberToPixels(position.left),
@@ -157,7 +157,7 @@ export class ScheduleGanttChartView {
                                 {
                                     targetMilestones.filter(milestone => (milestone.range.start.isAfter(timeline.getStart(), "day") || milestone.range.start.isSame(timeline.getStart(), "day")) && milestone.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(milestone => {
                                         const top = lineHeight * 0.3 * -1;
-                                        const position = this.schedule.calculatePosition(milestone.range.start, milestone.range.end, timelineWidth, this.scheduleViewType);
+                                        const position = this.timelineViewStrategy.calculatePosition(timelineWidth, milestone.range);
                                         return (
                                             <div className={`schedule-timeline-milestone-harness`} style={{
                                                 left: ScheduleUtil.numberToPixels(position.left),
@@ -177,7 +177,7 @@ export class ScheduleGanttChartView {
                                     targetCheckpoints.filter(checkpoint => (checkpoint.range.start.isAfter(timeline.getStart(), "day") || checkpoint.range.start.isSame(timeline.getStart(), "day")) && checkpoint.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(checkpoint => {
                                         const height = this.schedule.getLineHeight() * 0.7;
                                         const top = (lineHeight - height) / 8;
-                                        const position = this.schedule.calculatePosition(checkpoint.range.start, checkpoint.range.end, timelineWidth, this.scheduleViewType);
+                                        const position = this.timelineViewStrategy.calculatePosition(timelineWidth, checkpoint.range);
                                         return (
                                             <div className={`schedule-timeline-checkpoint-harness`} style={{
                                                 left: ScheduleUtil.numberToPixels(position.left),

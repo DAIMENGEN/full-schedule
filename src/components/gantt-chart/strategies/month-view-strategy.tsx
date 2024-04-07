@@ -5,6 +5,8 @@ import {
     ScheduleGanttChartTimelineSlotFrame
 } from "../common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-slot-frame";
 import {ScheduleUtil} from "../../../utils/schedule-util";
+import {Position} from "../../../core/types/public-types";
+import {DateRange} from "../../../core/datelib/date-range";
 
 export class MonthViewStrategy implements TimelineViewStrategy {
     private readonly schedule: ScheduleApi;
@@ -80,5 +82,13 @@ export class MonthViewStrategy implements TimelineViewStrategy {
         const months = timeline.getMonths();
         const months_cols = months.map(month => <col key={month.format("YYYY-MM")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
         return <colgroup>{months_cols}</colgroup>;
+    }
+
+    calculatePosition(timelineWidth: number, dateRange: DateRange): Position {
+        const timeline = this.schedule.getTimeline();
+        const monthCellWidth = timelineWidth / timeline.getMonths().length;
+        const monthLeft = timeline.getMonthPosition(dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start) * monthCellWidth;
+        const monthRight = (timeline.getMonthPosition(dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end) + 1) * monthCellWidth * -1;
+        return {left: monthLeft, right: monthRight};
     }
 }
