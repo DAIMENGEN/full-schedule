@@ -15,7 +15,7 @@ import {DatePicker} from "antd";
 const App = () => {
     const {RangePicker} = DatePicker;
     const [scheduleStartDate, setScheduleStartDate] = useState<dayjs.Dayjs>(dayjs());
-    const [scheduleEndDate, setScheduleEndDate] = useState<dayjs.Dayjs>(dayjs().add(1, "month"));
+    const [scheduleEndDate, setScheduleEndDate] = useState<dayjs.Dayjs>(dayjs().add(2, "month"));
     return (
         <div className={`schedule`}>
             <div className={`schedule-header`}>
@@ -42,7 +42,7 @@ const App = () => {
                               lineHeight={40}
                               slotMinWidth={50}
                               scheduleMaxHeight={800}
-                              scheduleViewType={"Day"}
+                              scheduleViewType={"Month"}
                               resourceAreaColumns={[
                                   {
                                       field: "title",
