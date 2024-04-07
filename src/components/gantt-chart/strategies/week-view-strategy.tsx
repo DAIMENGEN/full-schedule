@@ -85,11 +85,28 @@ export class WeekViewStrategy implements TimelineViewStrategy {
         return <colgroup>{weeks_cols}</colgroup>;
     }
 
-    calculatePosition(timelineWidth: number, range: DateRange): Position {
+    calculatePosition(timelineWidth: number, dateRange: DateRange): Position {
         const timeline = this.schedule.getTimeline();
-        const weekCellWidth = timelineWidth / timeline.getWeeks().length;
-        const weekLeft = timeline.getWeekPosition(range.start.isBefore(timeline.getStart()) ? timeline.getStart() : range.start) * weekCellWidth;
-        const weekRight = (timeline.getWeekPosition(range.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : range.end) + 1) * weekCellWidth * -1;
-        return {left: weekLeft, right: weekRight};
+        const weeks = timeline.getWeeks();
+        const weekCellWidth = timelineWidth / weeks.length;
+
+        // Determine the start and end dates within the timeline range;
+        const start = dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start;
+        const end = dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end;
+
+        // Calculate ratio
+        const ratio = weekCellWidth / 7;
+
+        // Calculate left position;
+        const startDate = start.day() + 1;
+        const weekLeft = timeline.getWeekPosition(start) * weekCellWidth;
+        const left = dateRange.start.isSameOrBefore(timeline.getStart()) ? weekLeft : weekLeft + (startDate * ratio)
+
+        // Calculate right position;
+        const endDate = 7 - (end.day() + 1);
+        const weekRight = (timeline.getWeekPosition(end) + 1) * weekCellWidth * -1;
+        const right = dateRange.end.isBefore(timeline.getEnd()) ? weekRight + (endDate * ratio) : weekRight;
+
+        return {left, right};
     }
 }
