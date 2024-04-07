@@ -5,6 +5,8 @@ import {
 } from "../common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-slot-frame";
 import {ScheduleApi} from "../../../core/structs/schedule-struct";
 import {ScheduleUtil} from "../../../utils/schedule-util";
+import {DateRange} from "../../../core/datelib/date-range";
+import {Position} from "../../../core/types/public-types";
 
 export class DayViewStrategy implements TimelineViewStrategy {
     private readonly schedule: ScheduleApi;
@@ -113,5 +115,13 @@ export class DayViewStrategy implements TimelineViewStrategy {
         const days = timeline.getDays();
         const days_cols = days.map(day => <col key={day.format("YYYY-MM-DD")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
         return <colgroup>{days_cols}</colgroup>;
+    }
+
+    calculatePosition(timelineWidth: number, range: DateRange): Position {
+        const timeline = this.schedule.getTimeline();
+        const dayCellWidth = timelineWidth / timeline.getDays().length;
+        const dayLeft = timeline.getDayPosition(range.start.isBefore(timeline.getStart()) ? timeline.getStart() : range.start) * dayCellWidth;
+        const dayRight = (timeline.getDayPosition(range.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : range.end) + 1) * dayCellWidth * -1;
+        return {left: dayLeft, right: dayRight};
     }
 }

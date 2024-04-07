@@ -5,6 +5,8 @@ import {
     ScheduleGanttChartTimelineSlotFrame
 } from "../common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-slot-frame";
 import {ScheduleUtil} from "../../../utils/schedule-util";
+import {DateRange} from "../../../core/datelib/date-range";
+import {Position} from "../../../core/types/public-types";
 
 export class YearViewStrategy implements TimelineViewStrategy {
 
@@ -65,5 +67,13 @@ export class YearViewStrategy implements TimelineViewStrategy {
         const years = timeline.getYears();
         const years_cols = years.map(year => <col key={year.format("YYYY")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
         return <colgroup>{years_cols}</colgroup>;
+    }
+
+    calculatePosition(timelineWidth: number, dateRange: DateRange): Position {
+        const timeline = this.schedule.getTimeline();
+        const yearCellWidth = timelineWidth / timeline.getYears().length;
+        const yearLeft = timeline.getYearPosition(dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start) * yearCellWidth;
+        const yearRight = (timeline.getYearPosition(dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end) + 1) * yearCellWidth * -1;
+        return {left: yearLeft, right: yearRight};
     }
 }

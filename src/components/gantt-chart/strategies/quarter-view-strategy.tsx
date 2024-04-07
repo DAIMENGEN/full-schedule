@@ -5,6 +5,8 @@ import {
     ScheduleGanttChartTimelineSlotFrame
 } from "../common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-slot-frame";
 import {ScheduleUtil} from "../../../utils/schedule-util";
+import {DateRange} from "../../../core/datelib/date-range";
+import {Position} from "../../../core/types/public-types";
 
 export class QuarterViewStrategy implements TimelineViewStrategy {
     private readonly schedule: ScheduleApi;
@@ -80,5 +82,13 @@ export class QuarterViewStrategy implements TimelineViewStrategy {
         const quarters = timeline.getQuarters();
         const quarters_cols = quarters.map(quarter => <col key={quarter.format("YYYY-MM")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
         return <colgroup>{quarters_cols}</colgroup>;
+    }
+
+    calculatePosition(timelineWidth: number, dateRange: DateRange): Position {
+        const timeline = this.schedule.getTimeline();
+        const quarterCellWidth = timelineWidth / timeline.getQuarters().length;
+        const quarterLeft = timeline.getQuarterPosition(dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start) * quarterCellWidth;
+        const quarterRight = (timeline.getQuarterPosition(dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end) + 1) * quarterCellWidth * -1;
+        return {left: quarterLeft, right: quarterRight};
     }
 }

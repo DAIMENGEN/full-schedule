@@ -4,14 +4,15 @@ import {
     ResourceApi,
     ResourceAreaColumn,
     ResourceContextMenuItems,
-    ResourceImpl, ResourceImplBuilder,
+    ResourceImpl,
+    ResourceImplBuilder,
     ResourceLabelContextMenuArg,
     ResourceLabelMountArg,
     ResourceLaneContextMenuArg,
     ResourceLaneMountArg
 } from "./resource-struct";
 import dayjs from "dayjs";
-import {ContextMenuClickHandler, DidMountHandler, Position, WillUnmountHandler} from "../types/public-types";
+import {ContextMenuClickHandler, DidMountHandler, WillUnmountHandler} from "../types/public-types";
 import {TimelineApi, TimelineImpl, TimelineSlotLabelMountArg, TimelineSlotLaneMountArg} from "./timeline-struct";
 import {ScheduleUtil} from "../../utils/schedule-util";
 import {ScheduleViewType} from "./schedule-view-struct";
@@ -19,13 +20,16 @@ import {
     Milestone,
     MilestoneApi,
     MilestoneContextMenuArg,
-    MilestoneContextMenuItems, MilestoneImpl,
+    MilestoneContextMenuItems,
+    MilestoneImpl,
     MilestoneMountArg
 } from "./milestone-struct";
 import {
-    Checkpoint, CheckpointApi,
+    Checkpoint,
+    CheckpointApi,
     CheckpointContextMenuArg,
-    CheckpointContextMenuItems, CheckpointImpl,
+    CheckpointContextMenuItems,
+    CheckpointImpl,
     CheckpointMountArg
 } from "./checkpoint-struct";
 
@@ -107,8 +111,6 @@ export interface ScheduleApi {
     getScheduleViewType(): ScheduleViewType;
 
     getResourceAreaColumns(): Array<ResourceAreaColumn>;
-
-    calculatePosition(start: dayjs.Dayjs, end: dayjs.Dayjs, timelineWidth: number, viewType: ScheduleViewType): Position;
 
     milestoneDidMount(arg: MilestoneMountArg): void;
 
@@ -240,38 +242,6 @@ export class ScheduleImpl implements ScheduleApi {
 
     public getResourceAreaColumns(): Array<ResourceAreaColumn> {
         return this.resourceAreaColumns;
-    }
-
-    public calculatePosition(start: dayjs.Dayjs, end: dayjs.Dayjs, timelineWidth: number, viewType: ScheduleViewType): Position {
-        switch (viewType) {
-            case "Day":
-                const dayCellWidth = timelineWidth / this.timeline.getDays().length;
-                const dayLeft = this.timeline.getDayPosition(start.isBefore(this.getStart()) ? this.getStart() : start) * dayCellWidth;
-                const dayRight = (this.timeline.getDayPosition(end.isAfter(this.getEnd()) ? this.getEnd() : end) + 1) * dayCellWidth * -1;
-                return {left: dayLeft, right: dayRight};
-            case "Week":
-                const weekCellWidth = timelineWidth / this.timeline.getWeeks().length;
-                const weekLeft = this.timeline.getWeekPosition(start.isBefore(this.getStart()) ? this.getStart() : start) * weekCellWidth;
-                const weekRight = (this.timeline.getWeekPosition(end.isAfter(this.getEnd()) ? this.getEnd() : end) + 1) * weekCellWidth * -1;
-                return {left: weekLeft, right: weekRight};
-            case "Month":
-                const monthCellWidth = timelineWidth / this.timeline.getMonths().length;
-                const monthLeft = this.timeline.getMonthPosition(start.isBefore(this.getStart()) ? this.getStart() : start) * monthCellWidth;
-                const monthRight = (this.timeline.getMonthPosition(end.isAfter(this.getEnd()) ? this.getEnd() : end) + 1) * monthCellWidth * -1;
-                return {left: monthLeft, right: monthRight};
-            case "Quarter":
-                const quarterCellWidth = timelineWidth / this.timeline.getQuarters().length;
-                const quarterLeft = this.timeline.getQuarterPosition(start.isBefore(this.getStart()) ? this.getStart() : start) * quarterCellWidth;
-                const quarterRight = (this.timeline.getQuarterPosition(end.isAfter(this.getEnd()) ? this.getEnd() : end) + 1) * quarterCellWidth * -1;
-                return {left: quarterLeft, right: quarterRight};
-            case "Year":
-                const yearCellWidth = timelineWidth / this.timeline.getYears().length;
-                const yearLeft = this.timeline.getYearPosition(start.isBefore(this.getStart()) ? this.getStart() : start) * yearCellWidth;
-                const yearRight = (this.timeline.getYearPosition(end.isAfter(this.getEnd()) ? this.getEnd() : end) + 1) * yearCellWidth * -1;
-                return {left: yearLeft, right: yearRight};
-            default:
-                return {left: 0, right: 0}
-        }
     }
 
     public milestoneContextMenu() {
