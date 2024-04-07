@@ -1,6 +1,6 @@
 import React, {useMemo, useRef} from "react";
-import {useSyncScroll} from "./hook/scroll/useSyncScroll";
-import {SCROLL_LEFT, SCROLL_TOP} from "./hook/scroll/scroll-type";
+import {useSyncScroll} from "./hooks/scroll/useSyncScroll";
+import {SCROLL_LEFT, SCROLL_TOP} from "./hooks/scroll/scroll-type";
 import ScheduleGanttChartDatagridHeader
     from "./schedule-gantt-chart-datagrid-header/schedule-gantt-chart-datagrid-header";
 import {
@@ -12,7 +12,7 @@ import ScheduleGanttChartDrawingBoard from "./schdeule-gantt-chart-drawing-board
 import "./schedule-gantt-chart.scss";
 import "./schedule-gantt-chart-capture.scss";
 import {ScheduleImpl, ScheduleProps} from "../../core/structs/schedule-struct";
-import {useScheduleHeight} from "./hook/useScheduleHeight";
+import {useScheduleHeight} from "./hooks/useScheduleHeight";
 import {
     ScheduleGanttChartTableColgroup
 } from "./schedule-gantt-chart-table-colgroup/schedule-gantt-chart-table-colgroup";

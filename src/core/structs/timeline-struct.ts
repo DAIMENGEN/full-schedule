@@ -57,11 +57,11 @@ export interface TimelineApi {
     getMonthPosition(target: dayjs.Dayjs): number;
     getQuarterPosition(target: dayjs.Dayjs): number;
     getYearPosition(target: dayjs.Dayjs): number;
-    getMonthsAndDays(): Array<{ month: dayjs.Dayjs, days: Array<dayjs.Dayjs> }>;
-    getYearsAndDays(): Array<{ year: dayjs.Dayjs, days: Array<dayjs.Dayjs> }>;
-    getYearsAndWeeks(): Array<{ year: dayjs.Dayjs, weeks: Array<dayjs.Dayjs> }>;
-    getYearsAndMonths(): Array<{year: dayjs.Dayjs, months: Array<dayjs.Dayjs>}>;
-    getYearsAndQuarters(): Array<{ year: dayjs.Dayjs, quarters: Array<dayjs.Dayjs> }>;
+    populateMonthsWithDays(): Array<{ month: dayjs.Dayjs, days: Array<dayjs.Dayjs> }>;
+    populateYearsWithDays(): Array<{ year: dayjs.Dayjs, days: Array<dayjs.Dayjs> }>;
+    populateYearsWithWeeks(): Array<{ year: dayjs.Dayjs, weeks: Array<dayjs.Dayjs> }>;
+    populateYearsWithMonths(): Array<{year: dayjs.Dayjs, months: Array<dayjs.Dayjs>}>;
+    populateYearsWithQuarters(): Array<{ year: dayjs.Dayjs, quarters: Array<dayjs.Dayjs> }>;
     getSpecialWorkdays(): Array<dayjs.Dayjs>;
     getCompanyHolidays(): Array<dayjs.Dayjs>;
     getNationalHolidays(): Array<dayjs.Dayjs>;
@@ -154,7 +154,7 @@ export class TimelineImpl implements TimelineApi {
     getYearPosition(target: dayjs.Dayjs): number {
         return this.getYears().findIndex(year => year.isSame(target, "year"));
     }
-    getMonthsAndDays(): Array<{ month: dayjs.Dayjs; days: Array<dayjs.Dayjs> }> {
+    populateMonthsWithDays(): Array<{ month: dayjs.Dayjs; days: Array<dayjs.Dayjs> }> {
         const monthsAndDays = [];
         const months = this.timelineDate.months;
         for (const key in months) {
@@ -165,7 +165,7 @@ export class TimelineImpl implements TimelineApi {
         }
         return monthsAndDays;
     }
-    getYearsAndDays(): Array<{ year: dayjs.Dayjs; days: Array<dayjs.Dayjs> }> {
+    populateYearsWithDays(): Array<{ year: dayjs.Dayjs; days: Array<dayjs.Dayjs> }> {
         const yearsAndDays = [];
         const years = this.timelineDate.years;
         for (const key in years) {
@@ -176,7 +176,7 @@ export class TimelineImpl implements TimelineApi {
         }
         return yearsAndDays;
     }
-    getYearsAndWeeks(): Array<{ year: dayjs.Dayjs; weeks: Array<dayjs.Dayjs> }> {
+    populateYearsWithWeeks(): Array<{ year: dayjs.Dayjs; weeks: Array<dayjs.Dayjs> }> {
         const weeks: dayjs.Dayjs[] = this.getWeeks();
         const groupArray = ScheduleUtil.groupArray<dayjs.Dayjs>(weeks, week => week.format("YYYY"));
         const yearsAndWeeks = [];
@@ -188,7 +188,7 @@ export class TimelineImpl implements TimelineApi {
         }
         return yearsAndWeeks;
     }
-    getYearsAndMonths(): Array<{ year: dayjs.Dayjs; months: Array<dayjs.Dayjs> }> {
+    populateYearsWithMonths(): Array<{ year: dayjs.Dayjs; months: Array<dayjs.Dayjs> }> {
         const days = this.getDays();
         const months = Array.from(new Set(days.map(day => day.format("YYYY-MM")))).map(date => dayjs(date));
         const groupArray = ScheduleUtil.groupArray<dayjs.Dayjs>(months, month => month.format("YYYY"));
@@ -201,7 +201,7 @@ export class TimelineImpl implements TimelineApi {
         }
         return yearsAndMonths;
     }
-    getYearsAndQuarters(): Array<{ year: dayjs.Dayjs; quarters: Array<dayjs.Dayjs> }> {
+    populateYearsWithQuarters(): Array<{ year: dayjs.Dayjs; quarters: Array<dayjs.Dayjs> }> {
         const days = this.getDays();
         const quarters = Array.from(new Set(days.map(day => day.startOf("quarter").format("YYYY-MM-DD")))).map(date => dayjs(date));
         const groupArray = ScheduleUtil.groupArray<dayjs.Dayjs>(quarters, quarter => quarter.format("YYYY"));
