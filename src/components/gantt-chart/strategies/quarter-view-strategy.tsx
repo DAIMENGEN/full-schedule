@@ -101,15 +101,14 @@ export class QuarterViewStrategy implements TimelineViewStrategy {
         const startMonths = [startMonth, startMonth + 1, startMonth + 2];
         const startIndex = startMonths.findIndex(value => value === start.month());
         const quarterLeft = timeline.getQuarterPosition(start) * quarterCellWidth;
-        const left = dateRange.start.isSameOrBefore(timeline.getStart()) ? quarterLeft : quarterLeft + startIndex * ratio;
-
+        const left = dateRange.start.isSameOrBefore(timeline.getStart(), "month") ? quarterLeft : quarterLeft + startIndex * ratio;
 
         // Calculate right position;
         const endMonth = end.startOf("quarter").month();
         const endMonths = [endMonth, endMonth + 1, endMonth + 2];
         const endIndex = endMonths.findIndex(value => value === end.month());
         const quarterRight = (timeline.getQuarterPosition(end) + 1) * quarterCellWidth * -1;
-        const right = dateRange.end.isBefore(timeline.getEnd()) ? quarterRight + (2 - endIndex) * ratio : quarterRight;
+        const right = dateRange.end.isBefore(timeline.getEnd(), "month") ? quarterRight + (2 - endIndex) * ratio : quarterRight;
 
         return {left, right};
     }

@@ -236,7 +236,7 @@ export const mockEvents: Array<FullScheduleEvent> = [
         title: "WaveTracer Prototype/R1.00",
         color: "#000000",
         range: {
-            start: dayjs("2023-06-15"),
+            start: dayjs("2023-07-15"),
             end: dayjs("2024-04-01")
         },
         resourceId: "9173832440948347237"
@@ -266,8 +266,8 @@ export const mockEvents: Array<FullScheduleEvent> = [
         title: "Maintenance (ATWFBView2/DataManager/Monitor)",
         color: "#000000",
         range: {
-            start: dayjs("2021-02-28"),
-            end: dayjs("2023-05-30")
+            start: dayjs("2022-01-28"),
+            end: dayjs("2023-11-30")
         },
         resourceId: "8892353061358296541"
     },
