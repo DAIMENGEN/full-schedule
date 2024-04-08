@@ -86,9 +86,31 @@ export class QuarterViewStrategy implements TimelineViewStrategy {
 
     calculatePosition(timelineWidth: number, dateRange: DateRange): Position {
         const timeline = this.schedule.getTimeline();
-        const quarterCellWidth = timelineWidth / timeline.getQuarters().length;
-        const quarterLeft = timeline.getQuarterPosition(dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start) * quarterCellWidth;
-        const quarterRight = (timeline.getQuarterPosition(dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end) + 1) * quarterCellWidth * -1;
-        return {left: quarterLeft, right: quarterRight};
+        const quarters = timeline.getQuarters();
+        const quarterCellWidth = timelineWidth / quarters.length;
+
+        // Determine the start and end dates within the timeline range;
+        const start = dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start;
+        const end = dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end;
+
+        // Calculate ratio;
+        const ratio = quarterCellWidth / 3;
+
+        // Calculate left position;
+        const startMonth = start.startOf("quarter").month();
+        const startMonths = [startMonth, startMonth + 1, startMonth + 2];
+        const startIndex = startMonths.findIndex(value => value === start.month());
+        const quarterLeft = timeline.getQuarterPosition(start) * quarterCellWidth;
+        const left = dateRange.start.isSameOrBefore(timeline.getStart()) ? quarterLeft : quarterLeft + startIndex * ratio;
+
+
+        // Calculate right position;
+        const endMonth = end.startOf("quarter").month();
+        const endMonths = [endMonth, endMonth + 1, endMonth + 2];
+        const endIndex = endMonths.findIndex(value => value === end.month());
+        const quarterRight = (timeline.getQuarterPosition(end) + 1) * quarterCellWidth * -1;
+        const right = dateRange.end.isBefore(timeline.getEnd()) ? quarterRight + (2 - endIndex) * ratio : quarterRight;
+
+        return {left, right};
     }
 }

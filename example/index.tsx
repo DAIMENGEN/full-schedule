@@ -15,12 +15,12 @@ import {DatePicker} from "antd";
 const App = () => {
     const {RangePicker} = DatePicker;
     const [scheduleStartDate, setScheduleStartDate] = useState<dayjs.Dayjs>(dayjs());
-    const [scheduleEndDate, setScheduleEndDate] = useState<dayjs.Dayjs>(dayjs().add(2, "month"));
+    const [scheduleEndDate, setScheduleEndDate] = useState<dayjs.Dayjs>(dayjs().add(1, "month"));
     return (
         <div className={`schedule`}>
             <div className={`schedule-header`}>
                 <RangePicker style={{width: 230}}
-                             picker={"month"}
+                             picker={"week"}
                              value={[scheduleStartDate, scheduleEndDate]}
                              onChange={(arg) => {
                                  if (arg) {
