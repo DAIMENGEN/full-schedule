@@ -71,9 +71,26 @@ export class YearViewStrategy implements TimelineViewStrategy {
 
     calculatePosition(timelineWidth: number, dateRange: DateRange): Position {
         const timeline = this.schedule.getTimeline();
-        const yearCellWidth = timelineWidth / timeline.getYears().length;
-        const yearLeft = timeline.getYearPosition(dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start) * yearCellWidth;
-        const yearRight = (timeline.getYearPosition(dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end) + 1) * yearCellWidth * -1;
-        return {left: yearLeft, right: yearRight};
+        const years = timeline.getYears();
+        const yearCellWidth = timelineWidth / years.length;
+
+        // Determine the start and end dates within the timeline range;
+        const start = dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start;
+        const end = dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end;
+
+        // Calculate ratio;
+        const ratio = yearCellWidth / 12;
+
+        // Calculate left position;
+        const startMonth = start.month();
+        const yearLeft = timeline.getYearPosition(start) * yearCellWidth;
+        const left = dateRange.start.isSameOrBefore(timeline.getStart(), "month") ? yearLeft : yearLeft + startMonth * ratio;
+
+        // Calculate right position;
+        const endMonth = end.month();
+        const yearRight = (timeline.getYearPosition(end) + 1) * yearCellWidth * -1;
+        const right = dateRange.end.isBefore(timeline.getEnd(), "month") ? yearRight + (11 - endMonth) * ratio : yearRight;
+
+        return {left, right};
     }
 }
