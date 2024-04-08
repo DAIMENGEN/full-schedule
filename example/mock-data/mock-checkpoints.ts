@@ -6,9 +6,9 @@ export const mockCheckpoints: Array<FullScheduleCheckpoint> = [
         id: "1",
         title: "Test Condition Monitor",
         range: {
-            start: dayjs("2022-12-31"),
-            end: dayjs("2022-12-31")
+            start: dayjs("2024-04-30"),
+            end: dayjs("2024-04-30")
         },
-        resourceId: "6769994271325942397"
+        resourceId: "9204513212332502410"
     },
 ]

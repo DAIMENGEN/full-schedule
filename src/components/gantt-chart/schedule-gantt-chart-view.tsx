@@ -160,7 +160,7 @@ export class ScheduleGanttChartView {
                                         const position = this.timelineViewStrategy.calculatePosition(timelineWidth, milestone.range);
                                         return (
                                             <div className={`schedule-timeline-milestone-harness`} style={{
-                                                left: ScheduleUtil.numberToPixels(position.left),
+                                                // left: ScheduleUtil.numberToPixels(position.left),
                                                 right: ScheduleUtil.numberToPixels(position.right),
                                                 top: ScheduleUtil.numberToPixels(top),
                                                 height: ScheduleUtil.numberToPixels(lineHeight),
@@ -180,7 +180,7 @@ export class ScheduleGanttChartView {
                                         const position = this.timelineViewStrategy.calculatePosition(timelineWidth, checkpoint.range);
                                         return (
                                             <div className={`schedule-timeline-checkpoint-harness`} style={{
-                                                left: ScheduleUtil.numberToPixels(position.left),
+                                                // left: ScheduleUtil.numberToPixels(position.left),
                                                 right: ScheduleUtil.numberToPixels(position.right),
                                                 top: ScheduleUtil.numberToPixels(top),
                                                 height: ScheduleUtil.numberToPixels(height),

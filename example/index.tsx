@@ -14,13 +14,13 @@ import {DatePicker} from "antd";
 
 const App = () => {
     const {RangePicker} = DatePicker;
-    const [scheduleStartDate, setScheduleStartDate] = useState<dayjs.Dayjs>(dayjs("2023-01-01"));
-    const [scheduleEndDate, setScheduleEndDate] = useState<dayjs.Dayjs>(dayjs("2024-12-31"));
+    const [scheduleStartDate, setScheduleStartDate] = useState<dayjs.Dayjs>(dayjs("2024-03-01"));
+    const [scheduleEndDate, setScheduleEndDate] = useState<dayjs.Dayjs>(dayjs("2024-7-31"));
     return (
         <div className={`schedule`}>
             <div className={`schedule-header`}>
                 <RangePicker style={{width: 230}}
-                             picker={"quarter"}
+                             picker={"month"}
                              value={[scheduleStartDate, scheduleEndDate]}
                              onChange={(arg) => {
                                  if (arg) {
@@ -42,7 +42,7 @@ const App = () => {
                               lineHeight={40}
                               slotMinWidth={50}
                               scheduleMaxHeight={800}
-                              scheduleViewType={"Quarter"}
+                              scheduleViewType={"Month"}
                               resourceAreaColumns={[
                                   {
                                       field: "title",
