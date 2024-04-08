@@ -75,7 +75,7 @@ export class YearViewStrategy extends TimelineViewStrategy {
         return <colgroup>{years_cols}</colgroup>;
     }
 
-    calculateEventPosition(timelineWidth: number, dateRange: DateRange): Position {
+    calculatePosition(timelineWidth: number, dateRange: DateRange): Position {
         const timeline = this.schedule.getTimeline();
         const years = timeline.getYears();
         const yearCellWidth = timelineWidth / years.length;

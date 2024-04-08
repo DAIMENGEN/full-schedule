@@ -90,7 +90,7 @@ export class WeekViewStrategy extends TimelineViewStrategy {
         return <colgroup>{weeks_cols}</colgroup>;
     }
 
-    calculateEventPosition(timelineWidth: number, dateRange: DateRange): Position {
+    calculatePosition(timelineWidth: number, dateRange: DateRange): Position {
         const timeline = this.schedule.getTimeline();
         const weeks = timeline.getWeeks();
         const weekCellWidth = timelineWidth / weeks.length;

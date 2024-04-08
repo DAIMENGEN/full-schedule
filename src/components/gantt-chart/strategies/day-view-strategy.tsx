@@ -130,7 +130,7 @@ export class DayViewStrategy extends TimelineViewStrategy {
         return <colgroup>{days_cols}</colgroup>;
     }
 
-    calculateEventPosition(timelineWidth: number, range: DateRange): Position {
+    calculatePosition(timelineWidth: number, range: DateRange): Position {
         const timeline = this.schedule.getTimeline();
         const dayCellWidth = timelineWidth / timeline.getDays().length;
         const dayLeft = timeline.getDayPosition(range.start.isBefore(timeline.getStart()) ? timeline.getStart() : range.start) * dayCellWidth;
@@ -147,7 +147,7 @@ export class DayViewStrategy extends TimelineViewStrategy {
                 {
                     targetMilestones.filter(milestone => (milestone.range.start.isAfter(timeline.getStart(), "day") || milestone.range.start.isSame(timeline.getStart(), "day")) && milestone.range.end.isSameOrBefore(timeline.getEnd(), "day")).map(milestone => {
                         const top = lineHeight * 0.3 * -1;
-                        const position = this.calculateEventPosition(timelineWidth, milestone.range);
+                        const position = this.calculatePosition(timelineWidth, milestone.range);
                         return (
                             <div className={`schedule-timeline-milestone-harness`} style={{
                                 left: ScheduleUtil.numberToPixels(position.left),
@@ -176,7 +176,7 @@ export class DayViewStrategy extends TimelineViewStrategy {
                     targetCheckpoints.filter(checkpoint => (checkpoint.range.start.isAfter(timeline.getStart(), "day") || checkpoint.range.start.isSame(timeline.getStart(), "day")) && checkpoint.range.end.isSameOrBefore(timeline.getEnd(), "day")).map(checkpoint => {
                         const height = this.schedule.getLineHeight() * 0.7;
                         const top = (lineHeight - height) / 8;
-                        const position = this.calculateEventPosition(timelineWidth, checkpoint.range);
+                        const position = this.calculatePosition(timelineWidth, checkpoint.range);
                         return (
                             <div className={`schedule-timeline-checkpoint-harness`} style={{
                                 left: ScheduleUtil.numberToPixels(position.left),

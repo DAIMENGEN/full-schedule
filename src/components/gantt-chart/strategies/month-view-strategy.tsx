@@ -90,7 +90,7 @@ export class MonthViewStrategy extends TimelineViewStrategy {
         return <colgroup>{months_cols}</colgroup>;
     }
 
-    calculateEventPosition(timelineWidth: number, dateRange: DateRange): Position {
+    calculatePosition(timelineWidth: number, dateRange: DateRange): Position {
         const timeline = this.schedule.getTimeline();
         const months = timeline.getMonths();
         const monthCellWidth = timelineWidth / months.length;
