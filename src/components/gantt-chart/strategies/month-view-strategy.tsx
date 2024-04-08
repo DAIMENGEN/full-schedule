@@ -1,6 +1,6 @@
 import React from "react";
 import {TimelineViewStrategy} from "./timeline-view-strategy";
-import {ScheduleApi} from "../../../core/structs/schedule-struct";
+import {ScheduleImpl} from "../../../core/structs/schedule-struct";
 import {
     ScheduleGanttChartTimelineSlotFrame
 } from "../common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-slot-frame";
@@ -8,12 +8,18 @@ import {ScheduleUtil} from "../../../utils/schedule-util";
 import {Position} from "../../../core/types/public-types";
 import {DateRange} from "../../../core/datelib/date-range";
 
-export class MonthViewStrategy implements TimelineViewStrategy {
-    private readonly schedule: ScheduleApi;
+export class MonthViewStrategy extends TimelineViewStrategy {
+    private readonly schedule: ScheduleImpl;
 
-    constructor(schedule: ScheduleApi) {
+    constructor(schedule: ScheduleImpl) {
+        super();
         this.schedule = schedule;
     }
+
+    get getSchedule(): ScheduleImpl {
+        return this.schedule;
+    }
+
     renderHeaderSlots(): React.ReactNode {
         const timeline = this.schedule.getTimeline();
         const months = timeline.getMonths();
@@ -107,4 +113,5 @@ export class MonthViewStrategy implements TimelineViewStrategy {
 
         return {left, right};
     }
+
 }

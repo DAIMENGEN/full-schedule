@@ -1,6 +1,6 @@
 import {TimelineViewStrategy} from "./timeline-view-strategy";
 import React from "react";
-import {ScheduleApi} from "../../../core/structs/schedule-struct";
+import {ScheduleImpl} from "../../../core/structs/schedule-struct";
 import {
     ScheduleGanttChartTimelineSlotFrame
 } from "../common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-slot-frame";
@@ -8,12 +8,17 @@ import {ScheduleUtil} from "../../../utils/schedule-util";
 import {DateRange} from "../../../core/datelib/date-range";
 import {Position} from "../../../core/types/public-types";
 
-export class YearViewStrategy implements TimelineViewStrategy {
+export class YearViewStrategy extends TimelineViewStrategy {
 
-    private readonly schedule: ScheduleApi;
+    private readonly schedule: ScheduleImpl;
 
-    constructor(schedule: ScheduleApi) {
+    constructor(schedule: ScheduleImpl) {
+        super();
         this.schedule = schedule;
+    }
+
+    get getSchedule(): ScheduleImpl {
+        return this.schedule;
     }
 
     renderHeaderSlots(): React.ReactNode {
@@ -65,7 +70,8 @@ export class YearViewStrategy implements TimelineViewStrategy {
         const timeline = this.schedule.getTimeline();
         const slotMinWidth = this.schedule.getSlotMinWidth();
         const years = timeline.getYears();
-        const years_cols = years.map(year => <col key={year.format("YYYY")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
+        const years_cols = years.map(year => <col key={year.format("YYYY")}
+                                                  style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
         return <colgroup>{years_cols}</colgroup>;
     }
 

@@ -36,8 +36,8 @@ export const mockMilestones: Array<FullScheduleMilestone> = [
         id: "4",
         title: "milestone4",
         range: {
-            start: dayjs("2021-02-24"),
-            end: dayjs("2021-02-24")
+            start: dayjs("2024-04-01"),
+            end: dayjs("2024-04-01")
         },
         status: "Warning",
         resourceId: "8638818878966724025",

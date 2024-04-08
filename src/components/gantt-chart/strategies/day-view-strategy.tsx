@@ -3,16 +3,21 @@ import {TimelineViewStrategy} from "./timeline-view-strategy";
 import {
     ScheduleGanttChartTimelineSlotFrame
 } from "../common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-slot-frame";
-import {ScheduleApi} from "../../../core/structs/schedule-struct";
+import {ScheduleImpl} from "../../../core/structs/schedule-struct";
 import {ScheduleUtil} from "../../../utils/schedule-util";
 import {DateRange} from "../../../core/datelib/date-range";
 import {Position} from "../../../core/types/public-types";
 
-export class DayViewStrategy implements TimelineViewStrategy {
-    private readonly schedule: ScheduleApi;
+export class DayViewStrategy extends TimelineViewStrategy {
+    private readonly schedule: ScheduleImpl;
 
-    constructor(schedule: ScheduleApi) {
+    constructor(schedule: ScheduleImpl) {
+        super();
         this.schedule = schedule;
+    }
+
+    get getSchedule(): ScheduleImpl {
+        return this.schedule;
     }
 
     renderHeaderSlots(): React.ReactNode {

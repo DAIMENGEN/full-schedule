@@ -1,4 +1,4 @@
-import {ScheduleApi} from "../../../core/structs/schedule-struct";
+import {ScheduleImpl} from "../../../core/structs/schedule-struct";
 import {TimelineViewStrategy} from "./timeline-view-strategy";
 import React from "react";
 import {
@@ -8,11 +8,16 @@ import {ScheduleUtil} from "../../../utils/schedule-util";
 import {DateRange} from "../../../core/datelib/date-range";
 import {Position} from "../../../core/types/public-types";
 
-export class QuarterViewStrategy implements TimelineViewStrategy {
-    private readonly schedule: ScheduleApi;
+export class QuarterViewStrategy extends TimelineViewStrategy {
+    private readonly schedule: ScheduleImpl;
 
-    constructor(schedule: ScheduleApi) {
+    constructor(schedule: ScheduleImpl) {
+        super();
         this.schedule = schedule;
+    }
+
+    get getSchedule(): ScheduleImpl {
+        return this.schedule;
     }
 
     renderHeaderSlots(): React.ReactNode {
@@ -80,7 +85,8 @@ export class QuarterViewStrategy implements TimelineViewStrategy {
         const timeline = this.schedule.getTimeline();
         const slotMinWidth = this.schedule.getSlotMinWidth();
         const quarters = timeline.getQuarters();
-        const quarters_cols = quarters.map(quarter => <col key={quarter.format("YYYY-MM")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
+        const quarters_cols = quarters.map(quarter => <col key={quarter.format("YYYY-MM")}
+                                                           style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
         return <colgroup>{quarters_cols}</colgroup>;
     }
 
