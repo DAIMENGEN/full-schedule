@@ -4,12 +4,6 @@ import {ScheduleUtil} from "../../utils/schedule-util";
 import React from "react";
 import {ResourceImpl} from "../../core/structs/resource-struct";
 import {
-    ScheduleGanttChartTimelineLaneEvent
-} from "./common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-lane-event";
-import {
-    ScheduleGanttChartTimelineMilestone
-} from "./common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-milestone";
-import {
     ScheduleGanttChartResourceTableColgroup
 } from "./common/schedule-gantt-chart-table-colgroup/schedule-gantt-chart-resource-table-colgroup";
 import {
@@ -18,9 +12,6 @@ import {
 import {
     ScheduleGanttChartDatagridLaneCellFrame
 } from "./common/schedule-gantt-chart-lane/schedule-gantt-chart-datagrid-lane-cell-frame";
-import {
-    ScheduleGanttChartTimelineCheckpoint
-} from "./common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-checkpoint";
 import {TimelineViewStrategy} from "./strategies/timeline-view-strategy";
 import {DayViewStrategy} from "./strategies/day-view-strategy";
 import {WeekViewStrategy} from "./strategies/week-view-strategy";
@@ -121,12 +112,8 @@ export class ScheduleGanttChartView {
     }
 
     renderTimelineElements(collapseResourceIds: Array<string>, timelineWidth: number): React.JSX.Element {
-
-        const timeline = this.schedule.getTimeline();
         const draw_elements = (resource: ResourceImpl) => {
-            const targetEvents = resource.events;
             const targetMilestones = resource.milestones;
-            const targetCheckpoints = resource.checkpoints;
             const lineHeight = targetMilestones.length > 0 ? this.schedule.getLineHeight() * 1.5 : this.schedule.getLineHeight();
             return (
                 <tr key={resource.id}>
@@ -134,64 +121,9 @@ export class ScheduleGanttChartView {
                         <div className={`schedule-timeline-lane-frame`} style={{height: ScheduleUtil.numberToPixels(lineHeight)}}>
                             <div className={`schedule-timeline-lane-misc`}></div>
                             <div className={`schedule-timeline-bg`}></div>
-                            <div className={`schedule-timeline-events schedule-scrollgrid-sync-inner`}>
-                                {
-                                    targetEvents.filter(event => !event.range.start.isAfter(timeline.getEnd()) && !event.range.end.isBefore(timeline.getStart())).map(event => {
-                                        const height = this.schedule.getLineHeight() * 0.7;
-                                        const top = (lineHeight - height) / 2;
-                                        const position = this.timelineViewStrategy.calculatePosition(timelineWidth, event.range);
-                                        return (
-                                            <div className={`schedule-timeline-event-harness`} style={{
-                                                left: ScheduleUtil.numberToPixels(position.left),
-                                                right: ScheduleUtil.numberToPixels(position.right),
-                                                top: ScheduleUtil.numberToPixels(top),
-                                                height: ScheduleUtil.numberToPixels(height),
-                                                lineHeight: ScheduleUtil.numberToPixels(height)}} key={event.id}>
-                                                <ScheduleGanttChartTimelineLaneEvent event={event} schedule={this.schedule} />
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                            <div className={`schedule-timeline-milestones schedule-scrollgrid-sync-inner`}>
-                                {
-                                    targetMilestones.filter(milestone => (milestone.range.start.isAfter(timeline.getStart(), "day") || milestone.range.start.isSame(timeline.getStart(), "day")) && milestone.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(milestone => {
-                                        const top = lineHeight * 0.3 * -1;
-                                        const position = this.timelineViewStrategy.calculatePosition(timelineWidth, milestone.range);
-                                        return (
-                                            <div className={`schedule-timeline-milestone-harness`} style={{
-                                                left: ScheduleUtil.numberToPixels(position.left),
-                                                right: ScheduleUtil.numberToPixels(position.right),
-                                                top: ScheduleUtil.numberToPixels(top),
-                                                height: ScheduleUtil.numberToPixels(lineHeight),
-                                                lineHeight: ScheduleUtil.numberToPixels(lineHeight)
-                                            }} key={milestone.id}>
-                                                <ScheduleGanttChartTimelineMilestone milestone={milestone} schedule={this.schedule} />
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                            <div className={`schedule-timeline-checkpoints schedule-scrollgrid-sync-inner`}>
-                                {
-                                    targetCheckpoints.filter(checkpoint => (checkpoint.range.start.isAfter(timeline.getStart(), "day") || checkpoint.range.start.isSame(timeline.getStart(), "day")) && checkpoint.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(checkpoint => {
-                                        const height = this.schedule.getLineHeight() * 0.7;
-                                        const top = (lineHeight - height) / 8;
-                                        const position = this.timelineViewStrategy.calculatePosition(timelineWidth, checkpoint.range);
-                                        return (
-                                            <div className={`schedule-timeline-checkpoint-harness`} style={{
-                                                left: ScheduleUtil.numberToPixels(position.left),
-                                                right: ScheduleUtil.numberToPixels(position.right),
-                                                top: ScheduleUtil.numberToPixels(top),
-                                                height: ScheduleUtil.numberToPixels(height),
-                                                lineHeight: ScheduleUtil.numberToPixels(lineHeight)
-                                            }} key={checkpoint.id}>
-                                                <ScheduleGanttChartTimelineCheckpoint checkpoint={checkpoint} schedule={this.schedule} />
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
+                            {this.timelineViewStrategy.renderEvents(resource, timelineWidth)}
+                            {this.timelineViewStrategy.renderMilestones(resource, timelineWidth)}
+                            {this.timelineViewStrategy.renderCheckpoints(resource, timelineWidth)}
                         </div>
                     </td>
                 </tr>

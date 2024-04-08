@@ -41,8 +41,8 @@ export const mockEvents: Array<FullScheduleEvent> = [
         title: "Test Condition Monitor R1.00 for T5230",
         color: "#000000",
         range: {
-            start: dayjs("2024-04-11"),
-            end: dayjs("2024-04-18")
+            start: dayjs("2024-05-11"),
+            end: dayjs("2024-06-18")
         },
         resourceId: "4577873557542726875"
     },

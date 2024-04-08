@@ -1,4 +1,4 @@
-import {ScheduleApi} from "../../../core/structs/schedule-struct";
+import {ScheduleImpl} from "../../../core/structs/schedule-struct";
 import {TimelineViewStrategy} from "./timeline-view-strategy";
 import React from "react";
 import {
@@ -7,12 +7,18 @@ import {
 import {ScheduleUtil} from "../../../utils/schedule-util";
 import {DateRange} from "../../../core/datelib/date-range";
 import {Position} from "../../../core/types/public-types";
+import {ResourceImpl} from "../../../core/structs/resource-struct";
 
-export class QuarterViewStrategy implements TimelineViewStrategy {
-    private readonly schedule: ScheduleApi;
+export class QuarterViewStrategy extends TimelineViewStrategy {
+    private readonly schedule: ScheduleImpl;
 
-    constructor(schedule: ScheduleApi) {
+    constructor(schedule: ScheduleImpl) {
+        super();
         this.schedule = schedule;
+    }
+
+    get getSchedule(): ScheduleImpl {
+        return this.schedule;
     }
 
     renderHeaderSlots(): React.ReactNode {
@@ -80,7 +86,8 @@ export class QuarterViewStrategy implements TimelineViewStrategy {
         const timeline = this.schedule.getTimeline();
         const slotMinWidth = this.schedule.getSlotMinWidth();
         const quarters = timeline.getQuarters();
-        const quarters_cols = quarters.map(quarter => <col key={quarter.format("YYYY-MM")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
+        const quarters_cols = quarters.map(quarter => <col key={quarter.format("YYYY-MM")}
+                                                           style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
         return <colgroup>{quarters_cols}</colgroup>;
     }
 
@@ -93,23 +100,61 @@ export class QuarterViewStrategy implements TimelineViewStrategy {
         const start = dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start;
         const end = dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end;
 
-        // Calculate ratio;
-        const ratio = quarterCellWidth / 3;
-
         // Calculate left position;
-        const startMonth = start.startOf("quarter").month();
-        const startMonths = [startMonth, startMonth + 1, startMonth + 2];
-        const startIndex = startMonths.findIndex(value => value === start.month());
+        const start_total_days = start.endOf("quarter").diff(start.startOf("quarter"), "day");
+        const startDate = start.diff(start.startOf("quarter"), "day");
+        const width_1 = quarterCellWidth / start_total_days;
         const quarterLeft = timeline.getQuarterPosition(start) * quarterCellWidth;
-        const left = dateRange.start.isSameOrBefore(timeline.getStart(), "month") ? quarterLeft : quarterLeft + startIndex * ratio;
+        const left = dateRange.start.isSameOrBefore(timeline.getStart(), "month") ? quarterLeft : quarterLeft + startDate * width_1;
 
         // Calculate right position;
-        const endMonth = end.startOf("quarter").month();
-        const endMonths = [endMonth, endMonth + 1, endMonth + 2];
-        const endIndex = endMonths.findIndex(value => value === end.month());
+        const end_total_days = end.endOf("quarter").diff(end.startOf("quarter"), "day");
+        const endDate = end.endOf("quarter").diff(end, "day");
+        const width_2 = quarterCellWidth / end_total_days;
         const quarterRight = (timeline.getQuarterPosition(end) + 1) * quarterCellWidth * -1;
-        const right = dateRange.end.isBefore(timeline.getEnd(), "month") ? quarterRight + (2 - endIndex) * ratio : quarterRight;
+        const right = dateRange.end.isBefore(timeline.getEnd(), "month") ? quarterRight + endDate * width_2 : quarterRight;
 
         return {left, right};
+    }
+
+    renderMilestones(resource: ResourceImpl, timelineWidth: number): React.ReactNode {
+        const timeline = this.schedule.getTimeline();
+        const targetMilestones = resource.milestones;
+        const cellWidth = timelineWidth / timeline.getQuarters().length;
+        const lineHeight = targetMilestones.length > 0 ? this.schedule.getLineHeight() * 1.5 : this.schedule.getLineHeight();
+        return (
+            <div className={`schedule-timeline-milestones schedule-scrollgrid-sync-inner`}>
+                {
+                    targetMilestones.filter(milestone => (milestone.range.start.isAfter(timeline.getStart(), "day") || milestone.range.start.isSame(timeline.getStart(), "day")) && milestone.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(milestone => {
+                        const position = this.calculatePosition(timelineWidth, milestone.range);
+                        const diffQuarter = milestone.range.start.diff(timeline.getStart(), "quarter");
+                        const diff = position.left - diffQuarter * cellWidth;
+                        const condition = diff < cellWidth / 2;
+                        return super.renderMilestone(milestone, lineHeight, position, condition);
+                    })
+                }
+            </div>
+        )
+    }
+
+    renderCheckpoints(resource: ResourceImpl, timelineWidth: number): React.ReactNode {
+        const timeline = this.schedule.getTimeline();
+        const targetMilestones = resource.milestones;
+        const targetCheckpoints = resource.checkpoints;
+        const cellWidth = timelineWidth / timeline.getQuarters().length;
+        const lineHeight = targetMilestones.length > 0 ? this.schedule.getLineHeight() * 1.5 : this.schedule.getLineHeight();
+        return (
+            <div className={`schedule-timeline-checkpoints schedule-scrollgrid-sync-inner`}>
+                {
+                    targetCheckpoints.filter(checkpoint => (checkpoint.range.start.isAfter(timeline.getStart(), "day") || checkpoint.range.start.isSame(timeline.getStart(), "day")) && checkpoint.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(checkpoint => {
+                        const position = this.calculatePosition(timelineWidth, checkpoint.range);
+                        const diffQuarter = checkpoint.range.start.diff(timeline.getStart(), "quarter");
+                        const diff = position.left - diffQuarter * cellWidth;
+                        const condition = diff < cellWidth / 2;
+                        return super.renderCheckpoint(checkpoint, lineHeight, position, condition);
+                    })
+                }
+            </div>
+        )
     }
 }

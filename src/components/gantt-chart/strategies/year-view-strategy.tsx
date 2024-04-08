@@ -1,19 +1,25 @@
 import {TimelineViewStrategy} from "./timeline-view-strategy";
 import React from "react";
-import {ScheduleApi} from "../../../core/structs/schedule-struct";
+import {ScheduleImpl} from "../../../core/structs/schedule-struct";
 import {
     ScheduleGanttChartTimelineSlotFrame
 } from "../common/schedule-gantt-chart-timeline/schedule-gantt-chart-timeline-slot-frame";
 import {ScheduleUtil} from "../../../utils/schedule-util";
 import {DateRange} from "../../../core/datelib/date-range";
 import {Position} from "../../../core/types/public-types";
+import {ResourceImpl} from "../../../core/structs/resource-struct";
 
-export class YearViewStrategy implements TimelineViewStrategy {
+export class YearViewStrategy extends TimelineViewStrategy {
 
-    private readonly schedule: ScheduleApi;
+    private readonly schedule: ScheduleImpl;
 
-    constructor(schedule: ScheduleApi) {
+    constructor(schedule: ScheduleImpl) {
+        super();
         this.schedule = schedule;
+    }
+
+    get getSchedule(): ScheduleImpl {
+        return this.schedule;
     }
 
     renderHeaderSlots(): React.ReactNode {
@@ -65,7 +71,8 @@ export class YearViewStrategy implements TimelineViewStrategy {
         const timeline = this.schedule.getTimeline();
         const slotMinWidth = this.schedule.getSlotMinWidth();
         const years = timeline.getYears();
-        const years_cols = years.map(year => <col key={year.format("YYYY")} style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
+        const years_cols = years.map(year => <col key={year.format("YYYY")}
+                                                  style={{minWidth: ScheduleUtil.numberToPixels(slotMinWidth)}}/>);
         return <colgroup>{years_cols}</colgroup>;
     }
 
@@ -92,5 +99,46 @@ export class YearViewStrategy implements TimelineViewStrategy {
         const right = dateRange.end.isBefore(timeline.getEnd(), "month") ? yearRight + (11 - endMonth) * ratio : yearRight;
 
         return {left, right};
+    }
+
+    renderMilestones(resource: ResourceImpl, timelineWidth: number): React.ReactNode {
+        const timeline = this.schedule.getTimeline();
+        const targetMilestones = resource.milestones;
+        const cellWidth = timelineWidth / timeline.getYears().length;
+        const lineHeight = targetMilestones.length > 0 ? this.schedule.getLineHeight() * 1.5 : this.schedule.getLineHeight();
+        return (
+            <div className={`schedule-timeline-milestones schedule-scrollgrid-sync-inner`}>
+                {
+                    targetMilestones.filter(milestone => (milestone.range.start.isAfter(timeline.getStart(), "day") || milestone.range.start.isSame(timeline.getStart(), "day")) && milestone.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(milestone => {
+                        const position = this.calculatePosition(timelineWidth, milestone.range);
+                        const diffYears = milestone.range.start.diff(timeline.getStart(), "year");
+                        const diff = position.left - diffYears * cellWidth;
+                        const condition = diff < cellWidth / 2;
+                        return super.renderMilestone(milestone, lineHeight, position, condition);
+                    })
+                }
+            </div>
+        )
+    }
+
+    renderCheckpoints(resource: ResourceImpl, timelineWidth: number): React.ReactNode {
+        const timeline = this.schedule.getTimeline();
+        const targetMilestones = resource.milestones;
+        const targetCheckpoints = resource.checkpoints;
+        const cellWidth = timelineWidth / timeline.getYears().length;
+        const lineHeight = targetMilestones.length > 0 ? this.schedule.getLineHeight() * 1.5 : this.schedule.getLineHeight();
+        return (
+            <div className={`schedule-timeline-checkpoints schedule-scrollgrid-sync-inner`}>
+                {
+                    targetCheckpoints.filter(checkpoint => (checkpoint.range.start.isAfter(timeline.getStart(), "day") || checkpoint.range.start.isSame(timeline.getStart(), "day")) && checkpoint.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(checkpoint => {
+                        const position = this.calculatePosition(timelineWidth, checkpoint.range);
+                        const diffYears = checkpoint.range.start.diff(timeline.getStart(), "year");
+                        const diff = position.left - diffYears * cellWidth;
+                        const condition = diff < cellWidth / 2;
+                        return super.renderCheckpoint(checkpoint, lineHeight, position, condition);
+                    })
+                }
+            </div>
+        )
     }
 }
