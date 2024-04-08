@@ -100,22 +100,19 @@ export class QuarterViewStrategy extends TimelineViewStrategy {
         const start = dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start;
         const end = dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end;
 
-        // Calculate ratio;
-        const ratio = quarterCellWidth / 3;
-
         // Calculate left position;
-        const startMonth = start.startOf("quarter").month();
-        const startMonths = [startMonth, startMonth + 1, startMonth + 2];
-        const startIndex = startMonths.findIndex(value => value === start.month());
+        const start_total_days = start.endOf("quarter").diff(start.startOf("quarter"), "day");
+        const startDate = start.diff(start.startOf("quarter"), "day");
+        const width_1 = quarterCellWidth / start_total_days;
         const quarterLeft = timeline.getQuarterPosition(start) * quarterCellWidth;
-        const left = dateRange.start.isSameOrBefore(timeline.getStart(), "month") ? quarterLeft : quarterLeft + startIndex * ratio;
+        const left = dateRange.start.isSameOrBefore(timeline.getStart(), "month") ? quarterLeft : quarterLeft + startDate * width_1;
 
         // Calculate right position;
-        const endMonth = end.startOf("quarter").month();
-        const endMonths = [endMonth, endMonth + 1, endMonth + 2];
-        const endIndex = endMonths.findIndex(value => value === end.month());
+        const end_total_days = end.endOf("quarter").diff(end.startOf("quarter"), "day");
+        const endDate = end.endOf("quarter").diff(end, "day");
+        const width_2 = quarterCellWidth / end_total_days;
         const quarterRight = (timeline.getQuarterPosition(end) + 1) * quarterCellWidth * -1;
-        const right = dateRange.end.isBefore(timeline.getEnd(), "month") ? quarterRight + (2 - endIndex) * ratio : quarterRight;
+        const right = dateRange.end.isBefore(timeline.getEnd(), "month") ? quarterRight + endDate * width_2 : quarterRight;
 
         return {left, right};
     }
