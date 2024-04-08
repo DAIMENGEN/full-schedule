@@ -47,10 +47,6 @@ const App = () => {
                                   {
                                       field: "title",
                                       headerContent: "Title"
-                                  },
-                                  {
-                                      field: "order",
-                                      headerContent: "order"
                                   }
                               ]}/>
             </div>

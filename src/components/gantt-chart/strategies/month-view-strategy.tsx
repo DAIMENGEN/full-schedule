@@ -7,6 +7,7 @@ import {
 import {ScheduleUtil} from "../../../utils/schedule-util";
 import {Position} from "../../../core/types/public-types";
 import {DateRange} from "../../../core/datelib/date-range";
+import {ResourceImpl} from "../../../core/structs/resource-struct";
 
 export class MonthViewStrategy extends TimelineViewStrategy {
     private readonly schedule: ScheduleImpl;
@@ -114,4 +115,44 @@ export class MonthViewStrategy extends TimelineViewStrategy {
         return {left, right};
     }
 
+    renderMilestones(resource: ResourceImpl, timelineWidth: number): React.ReactNode {
+        const timeline = this.schedule.getTimeline();
+        const cellWidth = timelineWidth / timeline.getMonths().length;
+        const targetMilestones = resource.milestones;
+        const lineHeight = targetMilestones.length > 0 ? this.schedule.getLineHeight() * 1.5 : this.schedule.getLineHeight();
+        return (
+            <div className={`schedule-timeline-milestones schedule-scrollgrid-sync-inner`}>
+                {
+                    targetMilestones.filter(milestone => (milestone.range.start.isAfter(timeline.getStart(), "day") || milestone.range.start.isSame(timeline.getStart(), "day")) && milestone.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(milestone => {
+                        const position = this.calculatePosition(timelineWidth, milestone.range);
+                        const diffMonth = milestone.range.start.diff(timeline.getStart(), "month");
+                        const diff = position.left - diffMonth * cellWidth;
+                        const condition = diff < cellWidth / 2;
+                        return super.renderMilestone(milestone, lineHeight, position,condition)
+                    })
+                }
+            </div>
+        )
+    }
+
+    renderCheckpoints(resource: ResourceImpl, timelineWidth: number): React.ReactNode {
+        const timeline = this.schedule.getTimeline();
+        const cellWidth = timelineWidth / timeline.getMonths().length;
+        const targetMilestones = resource.milestones;
+        const targetCheckpoints = resource.checkpoints;
+        const lineHeight = targetMilestones.length > 0 ? this.schedule.getLineHeight() * 1.5 : this.schedule.getLineHeight();
+        return (
+            <div className={`schedule-timeline-checkpoints schedule-scrollgrid-sync-inner`}>
+                {
+                    targetCheckpoints.filter(checkpoint => (checkpoint.range.start.isAfter(timeline.getStart(), "day") || checkpoint.range.start.isSame(timeline.getStart(), "day")) && checkpoint.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(checkpoint => {
+                        const position = this.calculatePosition(timelineWidth, checkpoint.range);
+                        const diffMonth = checkpoint.range.start.diff(timeline.getStart(), "month");
+                        const diff = position.left - diffMonth * cellWidth;
+                        const condition = diff < cellWidth / 2;
+                        return super.renderCheckpoint(checkpoint, lineHeight, position, condition);
+                    })
+                }
+            </div>
+        )
+    }
 }
