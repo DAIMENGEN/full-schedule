@@ -90,7 +90,7 @@ export class QuarterViewStrategy extends TimelineViewStrategy {
         return <colgroup>{quarters_cols}</colgroup>;
     }
 
-    calculatePosition(timelineWidth: number, dateRange: DateRange): Position {
+    calculateEventPosition(timelineWidth: number, dateRange: DateRange): Position {
         const timeline = this.schedule.getTimeline();
         const quarters = timeline.getQuarters();
         const quarterCellWidth = timelineWidth / quarters.length;

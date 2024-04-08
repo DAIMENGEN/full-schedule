@@ -19,7 +19,7 @@ export abstract class TimelineViewStrategy {
     abstract renderHeaderSlots(): React.ReactNode;
     abstract renderBodySlots(): React.ReactNode;
     abstract renderColgroup(): React.ReactNode;
-    abstract calculatePosition(timelineWidth: number, range: DateRange): Position;
+    abstract calculateEventPosition(timelineWidth: number, range: DateRange): Position;
     renderEvents(resource: ResourceImpl, timelineWidth: number): React.ReactNode {
         const schedule = this.getSchedule;
         const timeline = schedule.getTimeline();
@@ -32,7 +32,7 @@ export abstract class TimelineViewStrategy {
                     targetEvents.filter(event => !event.range.start.isAfter(timeline.getEnd()) && !event.range.end.isBefore(timeline.getStart())).map(event => {
                         const height = schedule.getLineHeight() * 0.7;
                         const top = (lineHeight - height) / 2;
-                        const position = this.calculatePosition(timelineWidth, event.range);
+                        const position = this.calculateEventPosition(timelineWidth, event.range);
                         return (
                             <div className={`schedule-timeline-event-harness`} style={{
                                 left: ScheduleUtil.numberToPixels(position.left),
@@ -58,7 +58,7 @@ export abstract class TimelineViewStrategy {
                 {
                     targetMilestones.filter(milestone => (milestone.range.start.isAfter(timeline.getStart(), "day") || milestone.range.start.isSame(timeline.getStart(), "day")) && milestone.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(milestone => {
                         const top = lineHeight * 0.3 * -1;
-                        const position = this.calculatePosition(timelineWidth, milestone.range);
+                        const position = this.calculateEventPosition(timelineWidth, milestone.range);
                         return (
                             <div className={`schedule-timeline-milestone-harness`} style={{
                                 // left: ScheduleUtil.numberToPixels(position.left),
@@ -87,7 +87,7 @@ export abstract class TimelineViewStrategy {
                     targetCheckpoints.filter(checkpoint => (checkpoint.range.start.isAfter(timeline.getStart(), "day") || checkpoint.range.start.isSame(timeline.getStart(), "day")) && checkpoint.range.end.isSameOrBefore(timeline.getEnd(),"day")).map(checkpoint => {
                         const height = schedule.getLineHeight() * 0.7;
                         const top = (lineHeight - height) / 8;
-                        const position = this.calculatePosition(timelineWidth, checkpoint.range);
+                        const position = this.calculateEventPosition(timelineWidth, checkpoint.range);
                         return (
                             <div className={`schedule-timeline-checkpoint-harness`} style={{
                                 // left: ScheduleUtil.numberToPixels(position.left),
