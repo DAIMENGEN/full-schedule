@@ -31,8 +31,8 @@ export const mockEvents: Array<FullScheduleEvent> = [
         title: "WFB 3D Viewer (Prototype)",
         color: "#000000",
         range: {
-            start: dayjs("2022-04-30"),
-            end: dayjs("2024-02-28")
+            start: dayjs("2024-04-01"),
+            end: dayjs("2024-04-15")
         },
         resourceId: "8858562325095899135"
     },
@@ -91,8 +91,8 @@ export const mockEvents: Array<FullScheduleEvent> = [
         title: "Test Condition Monitor R1.01",
         color: "#000000",
         range: {
-            start: dayjs("2022-01-31"),
-            end: dayjs("2022-09-29")
+            start: dayjs("2024-01-05"),
+            end: dayjs("2024-06-30")
         },
         resourceId: "4520338440843026263"
     },
@@ -184,8 +184,8 @@ export const mockEvents: Array<FullScheduleEvent> = [
         title: "Test Condition Monitor R1.02",
         color: "#000000",
         range: {
-            start: dayjs("2022-09-30"),
-            end: dayjs("2023-06-29")
+            start: dayjs("2024-01-01"),
+            end: dayjs("2024-01-31")
         },
         resourceId: "9194801021046288383"
     },
@@ -236,8 +236,8 @@ export const mockEvents: Array<FullScheduleEvent> = [
         title: "WaveTracer Prototype/R1.00",
         color: "#000000",
         range: {
-            start: dayjs("2023-07-15"),
-            end: dayjs("2024-04-01")
+            start: dayjs("2024-04-15"),
+            end: dayjs("2024-05-04")
         },
         resourceId: "9173832440948347237"
     },
