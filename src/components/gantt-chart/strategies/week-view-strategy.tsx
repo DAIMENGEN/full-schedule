@@ -106,12 +106,12 @@ export class WeekViewStrategy extends TimelineViewStrategy {
         // Calculate left position;
         const startDate = start.day();
         const weekLeft = timeline.getWeekPosition(start) * weekCellWidth;
-        const left = dateRange.start.isSameOrBefore(timeline.getStart()) ? weekLeft : weekLeft + (startDate * ratio)
+        const left = dateRange.start.isSameOrBefore(timeline.getStart(), "day") ? weekLeft : weekLeft + (startDate * ratio)
 
         // Calculate right position;
         const endDate = 6 - end.day();
         const weekRight = (timeline.getWeekPosition(end) + 1) * weekCellWidth * -1;
-        const right = dateRange.end.isBefore(timeline.getEnd()) ? weekRight + (endDate * ratio) : weekRight;
+        const right = dateRange.end.isBefore(timeline.getEnd(), "day") ? weekRight + (endDate * ratio) : weekRight;
 
         return {left, right};
     }

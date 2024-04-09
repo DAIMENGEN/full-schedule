@@ -101,18 +101,20 @@ export class QuarterViewStrategy extends TimelineViewStrategy {
         const end = dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end;
 
         // Calculate left position;
-        const start_total_days = start.endOf("quarter").diff(start.startOf("quarter"), "day");
+        const start_total_days = start.endOf("quarter").diff(start.startOf("quarter"), "day") + 1;
         const startDate = start.diff(start.startOf("quarter"), "day");
         const width_1 = quarterCellWidth / start_total_days;
+        const leftOffset = startDate * width_1;
         const quarterLeft = timeline.getQuarterPosition(start) * quarterCellWidth;
-        const left = dateRange.start.isSameOrBefore(timeline.getStart(), "month") ? quarterLeft : quarterLeft + startDate * width_1;
+        const left = dateRange.start.isSameOrBefore(timeline.getStart(), "day") ? quarterLeft : quarterLeft + leftOffset;
 
         // Calculate right position;
-        const end_total_days = end.endOf("quarter").diff(end.startOf("quarter"), "day");
+        const end_total_days = end.endOf("quarter").diff(end.startOf("quarter"), "day") + 1;
         const endDate = end.endOf("quarter").diff(end, "day");
         const width_2 = quarterCellWidth / end_total_days;
+        const rightOffset = endDate * width_2;
         const quarterRight = (timeline.getQuarterPosition(end) + 1) * quarterCellWidth * -1;
-        const right = dateRange.end.isBefore(timeline.getEnd(), "month") ? quarterRight + endDate * width_2 : quarterRight;
+        const right = dateRange.end.isBefore(timeline.getEnd(), "day") ? quarterRight + rightOffset : quarterRight;
 
         return {left, right};
     }

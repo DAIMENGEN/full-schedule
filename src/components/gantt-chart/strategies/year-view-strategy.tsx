@@ -85,18 +85,21 @@ export class YearViewStrategy extends TimelineViewStrategy {
         const start = dateRange.start.isBefore(timeline.getStart()) ? timeline.getStart() : dateRange.start;
         const end = dateRange.end.isAfter(timeline.getEnd()) ? timeline.getEnd() : dateRange.end;
 
-        // Calculate ratio;
-        const ratio = yearCellWidth / 12;
-
         // Calculate left position;
-        const startMonth = start.month();
+        const start_total_days = start.endOf("year").diff(start.startOf("year"), "day") + 1;
+        const startDate = start.diff(start.startOf("year"), "day");
+        const width_1 = yearCellWidth / start_total_days;
+        const leftOffset = startDate * width_1;
         const yearLeft = timeline.getYearPosition(start) * yearCellWidth;
-        const left = dateRange.start.isSameOrBefore(timeline.getStart(), "month") ? yearLeft : yearLeft + startMonth * ratio;
+        const left = dateRange.start.isSameOrBefore(timeline.getStart(), "day") ? yearLeft : yearLeft + leftOffset;
 
         // Calculate right position;
-        const endMonth = end.month();
+        const end_total_days = end.endOf("year").diff(end.startOf("year"), "day") + 1;
+        const endDate = end.endOf("year").diff(end, "day");
+        const width_2 = yearCellWidth / end_total_days;
+        const rightOffset = endDate * width_2;
         const yearRight = (timeline.getYearPosition(end) + 1) * yearCellWidth * -1;
-        const right = dateRange.end.isBefore(timeline.getEnd(), "month") ? yearRight + (11 - endMonth) * ratio : yearRight;
+        const right = dateRange.end.isBefore(timeline.getEnd(), "day") ? yearRight + rightOffset : yearRight;
 
         return {left, right};
     }
