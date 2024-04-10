@@ -45,7 +45,7 @@ const App = () => {
                               checkpoints={mockCheckpoints}
                               lineHeight={40}
                               slotMinWidth={50}
-                              scheduleMaxHeight={800}
+                              scheduleMaxHeight={1000}
                               scheduleViewType={"Week"}
                               resourceAreaColumns={[
                                   {
