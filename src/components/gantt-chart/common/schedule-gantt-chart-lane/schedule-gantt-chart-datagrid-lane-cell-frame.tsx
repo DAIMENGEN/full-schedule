@@ -3,10 +3,9 @@ import {ScheduleImpl} from "../../../../core/structs/schedule-struct";
 import {useScheduleDispatch, useScheduleSelector} from "../../../../core/features/schedule-hook";
 import {ScheduleUtil} from "../../../../utils/schedule-util";
 import {Dropdown, Space} from "antd";
-import {Resource, ResourceAreaColumn, ResourceImpl, ResourceType} from "../../../../core/structs/resource-struct";
+import {Resource, ResourceAreaColumn, ResourceImpl} from "../../../../core/structs/resource-struct";
 import {MinusSquareOutlined, PlusSquareOutlined} from "@ant-design/icons";
 import {ScheduleMilestoneIconSvg} from "../../../../core/icon/svg-icon/schedule-milestone-icon-svg";
-import {ScheduleRecurringIconSvg} from "../../../../core/icon/svg-icon/schedule-recurring-icon-svg";
 import {collapseResource, expandedResource} from "../../../../core/features/resource/resource-slice";
 
 type Props = {
@@ -38,23 +37,12 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
     }
     const lineHeight = currentResource.getMilestones().length > 0 ? schedule.getLineHeight() * 1.5 : schedule.getLineHeight();
     const milestone = useMemo(() => new ScheduleMilestoneIconSvg(), []);
-    const recurring = useMemo(() => new ScheduleRecurringIconSvg(), []);
-    const renderResourceType = useCallback((resource: ResourceImpl) => {
-        if (resource.milestones.length > 0) return milestone.render();
-        // TODO MILESTONE 和 CHECKPOINT 需要从 ResourceType 中移除或删除。
-        switch (resource.type) {
-            // case ResourceType.MILESTONE:
-            // return milestone.render();
-            // case ResourceType.CHECKPOINT:
-            //     return checkpoint.render();
-            case ResourceType.RECURRING:
-                return recurring.render();
-            case ResourceType.ROUTINE:
-                return <></>;
-            default:
-                return <></>;
-        }
-    }, [milestone, recurring]);
+    const renderMilestoneIcon = useCallback((resource: ResourceImpl) => {
+        if (resource.milestones.length > 0)
+            return milestone.render();
+        else
+            return <></>;
+    }, [milestone]);
 
     useEffect(() => {
         if (datagridCell.current) {
@@ -120,8 +108,8 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
                         <span
                             className={`schedule-datagrid-cell-main`}>{getResourceColumnValue(resourceAreaColumn.field, currentResource)}</span>
                         {
-                            showButton && <span
-                                title={ScheduleUtil.capitalizeFirstLetter(ResourceType[currentResource.type])}>{renderResourceType(currentResource)}</span>
+                            showButton &&
+                            <span title={currentResource.title}>{renderMilestoneIcon(currentResource)}</span>
                         }
                     </Space>
                 </div>
