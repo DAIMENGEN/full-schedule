@@ -29,13 +29,6 @@ export type ResourceLaneContextMenuArg = MenuArg<ResourceLaneArg>;
 
 export type ResourceLabelContextMenuArg = MenuArg<ResourceLabelArg>;
 
-export enum ResourceType {
-    MILESTONE = 1,
-    CHECKPOINT = 2,
-    RECURRING = 3,
-    ROUTINE = 4,
-}
-
 export interface Resource {
     id: string;
     title: string;
@@ -58,7 +51,6 @@ export interface ResourceImplProps {
 export interface ResourceApi {
     getId(): string;
     getTitle(): string;
-    getType(): ResourceType;
     getDepth(): number;
     getParent(): ResourceApi | undefined;
     getChildren(): Array<ResourceApi>;
@@ -71,7 +63,6 @@ export interface ResourceApi {
 export class ResourceImpl implements ResourceApi {
     id: string;
     title: string;
-    type: ResourceType;
     parentId?: string;
     depth: number;
     parent?: ResourceImpl;
@@ -92,23 +83,6 @@ export class ResourceImpl implements ResourceApi {
         this.milestones = milestones;
         this.checkpoints = checkpoints;
         this.extendedProps = resource.extendedProps;
-        switch (resource.type) {
-            case 1:
-                this.type = ResourceType.MILESTONE;
-                break;
-            case 2:
-                this.type = ResourceType.CHECKPOINT;
-                break;
-            case 3:
-                this.type = ResourceType.RECURRING;
-                break;
-            case 4:
-                this.type = ResourceType.ROUTINE;
-                break;
-            default:
-                this.type = ResourceType.ROUTINE;
-                break;
-        }
     }
 
     getId(): string {
@@ -117,10 +91,6 @@ export class ResourceImpl implements ResourceApi {
 
     getTitle(): string {
         return this.title;
-    }
-
-    getType(): ResourceType {
-        return this.type;
     }
 
     getDepth(): number {

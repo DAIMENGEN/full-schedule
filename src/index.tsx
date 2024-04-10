@@ -11,13 +11,8 @@ export {ScheduleApi as FullScheduleApi} from "./core/structs/schedule-struct";
 export {ScheduleViewType as FullScheduleViewType} from "./core/structs/schedule-view-struct";
 export {ResourceAreaColumn as FullScheduleResourceAreaColumn} from "./core/structs/resource-struct";
 export {ScheduleCheckpointIconSvg as FullScheduleCheckpointIconSvg} from "./core/icon/svg-icon/schedule-checkpoint-icon-svg";
-export {ScheduleFilterColumnIconSvg as FullScheduleFilterColumnIconSvg} from "./core/icon/svg-icon/schedule-filter-column-icon-svg";
-export {ScheduleHiddenIconSvg as FullScheduleHiddenIconSvg} from "./core/icon/svg-icon/schedule-hidden-icon-svg";
 export {ScheduleMilestoneIconSvg as FullScheduleMilestoneIconSvg} from "./core/icon/svg-icon/schedule-milestone-icon-svg";
-export {ScheduleRecurringIconSvg as FullScheduleRecurringIconSvg} from "./core/icon/svg-icon/schedule-recurring-icon-svg";
-export {ScheduleTodayIconSvg as FullScheduleTodayIconSvg} from "./core/icon/svg-icon/schedule-today-icon-svg";
-export {ScheduleCaptureApi as FullScheduleCaptureApi} from "./core/structs/schedule-capture-struct";
-export {ScheduleCaptureImpl as FullScheduleCaptureImpl} from "./core/structs/schedule-capture-struct";
+export {ScheduleCaptureImpl as FullScheduleCaptureApi} from "./core/structs/schedule-capture-struct";
 
 export {EventMountArg as FullScheduleEventMountArg} from "./core/structs/event-struct";
 export {EventContextMenuArg as FullScheduleEventContextMenuArg} from "./core/structs/event-struct";
