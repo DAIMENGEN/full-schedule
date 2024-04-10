@@ -9,8 +9,8 @@ import "../dist/full-schedule.css";
 import {mockMilestones} from "./mock-data/mock-milestones";
 import "./index.scss";
 import {mockCheckpoints} from "./mock-data/mock-checkpoints";
-import {FullSchedule} from "../dist";
-import {DatePicker} from "antd";
+import {FullSchedule, FullScheduleCaptureImpl} from "../dist";
+import {Button, DatePicker} from "antd";
 
 const App = () => {
     const {RangePicker} = DatePicker;
@@ -31,6 +31,10 @@ const App = () => {
                                      setScheduleEndDate(scheduleEndDate);
                                  }
                              }}/>
+                <Button type={"primary"} onClick={() => {
+                    const capture = new FullScheduleCaptureImpl()
+                    capture.capture(() => {});
+                }}>Capture</Button>
             </div>
             <div className={`schedule-body`}>
                 <FullSchedule start={scheduleStartDate}
