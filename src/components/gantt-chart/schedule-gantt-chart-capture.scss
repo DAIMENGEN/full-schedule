@@ -1,14 +1,15 @@
 .schedule-view-capture {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
   width: 100%;
-  height: 100%;
-  z-index: 1;
+  z-index: 10;
   overflow: scroll;
-  box-shadow: 5px 5px 10px rgba(112, 1, 45, 0.5), -5px -5px 10px rgba(112, 1, 45, 0.5), 5px -5px 10px rgba(112, 1, 45, 0.5), -5px 5px 10px rgba(112, 1, 45, 0.5);
   animation-delay: 1s;
-  animation: scheduleCaptureAnimation 2s forwards;
+  transition: transform 0.5s ease;
+  animation: shrinkAnimation 2s forwards;
+  transform: translate(-50%, -50%) scale(1);
+  box-shadow: 5px 5px 10px rgba(112, 1, 45, 0.5), -5px -5px 10px rgba(112, 1, 45, 0.5), 5px -5px 10px rgba(112, 1, 45, 0.5), -5px 5px 10px rgba(112, 1, 45, 0.5);
 
   .schedule-view-capture-cancel {
     position: fixed;
@@ -41,13 +42,11 @@
   }
 }
 
-
-
-@keyframes scheduleCaptureAnimation {
+@keyframes shrinkAnimation {
   from {
-    transform: translateX(0) translateY(0);
+    transform: translate(-50%, -50%) scale(1);
   }
   to {
-    transform: translateX(0) translateY(0) scale(0.5);
+    transform: translate(-50%, -50%) scale(0.4);
   }
 }
