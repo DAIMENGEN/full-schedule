@@ -52,12 +52,14 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
                 el: element,
                 resource: resource,
                 schedule: schedule,
+                label: resourceAreaColumn,
             });
             return () => {
                 schedule.resourceLaneWillUnmount({
                     el: element,
                     resource: resource,
                     schedule: schedule,
+                    label: resourceAreaColumn,
                 });
             }
         } else {
@@ -76,6 +78,7 @@ export const ScheduleGanttChartDatagridLaneCellFrame: React.FC<Props> = ({
                           schedule.resourceLaneContextMenuClick({
                               schedule: schedule,
                               resource: currentResource,
+                              label: resourceAreaColumn,
                               key: key,
                               keyPath: keyPath,
                               domEvent: domEvent
