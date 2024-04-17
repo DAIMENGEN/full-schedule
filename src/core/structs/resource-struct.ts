@@ -13,6 +13,7 @@ export type ResourceAreaColumn = {
 }
 
 export interface ResourceLaneArg {
+    label: ResourceAreaColumn;
     schedule: ScheduleApi;
     resource: ResourceApi;
 }
